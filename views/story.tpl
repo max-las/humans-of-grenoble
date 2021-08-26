@@ -16,7 +16,7 @@
       </div>
       <div class="tile is-parent px-5">
         <div class="tile is-child is-flex is-align-items-center">
-          <p class="is-family-secondary is-italic display-new-lines">“{{.Text}}”</p>
+          <p class="is-family-lora display-new-lines">“{{.Text}}”</p>
         </div>
       </div>
     </div>

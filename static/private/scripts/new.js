@@ -1,3 +1,5 @@
+var resizedImage = null;
+
 $(function() {
   $("#imageFile").change(function(){
     var file = this.files[0];
@@ -14,9 +16,11 @@ $(function() {
         $("#fileError .message-body").html("Ce fichier dépasse la taille maximum de 50 Mo.");
         $("#fileError").removeClass("is-hidden");
       }else{
-        $("#fileError").addClass("is-hidden");
-        $("#preview img").attr("src", URL.createObjectURL(file));
-        $("#preview").removeClass("is-hidden");
+        resizeImage(file, function(){
+          $("#fileError").addClass("is-hidden");
+          $("#preview img").attr("src", URL.createObjectURL(resizedImage));
+          $("#preview").removeClass("is-hidden");
+        });
       }
 
     }else{
@@ -81,4 +85,31 @@ function clearFileInput(){
   $("#preview, #imageField .file-name").addClass("is-hidden");
   $("#imageField .file").removeClass("has-name");
   $("#imageField .file-name").html("");
+}
+
+function resizeImage(imageFile, callback){
+  let canvas = document.createElement("canvas");
+  let ctx = canvas.getContext("2d");
+  var imgBefore = new Image();
+  imgBefore.onload = function(){
+    var ratio = this.width / this.height;
+    var heightAfter, widthAfter;
+    if(this.height < this.width){
+      heightAfter = 1500;
+      widthAfter = 1500 * ratio;
+    }else{
+      widthAfter = 1500;
+      heightAfter = 1500 / ratio;
+    }
+    canvas.width = widthAfter;
+    canvas.height = heightAfter;
+    ctx.drawImage(imgBefore, 0, 0, widthAfter, heightAfter);
+    canvas.toBlob(function(blob){
+      resizedImage = new File([blob], imageFile.name, {
+        type: "image/png"
+      });
+      callback();
+    }, "image/png");
+  };
+  imgBefore.src = URL.createObjectURL(imageFile);
 }

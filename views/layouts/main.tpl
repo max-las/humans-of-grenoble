@@ -22,7 +22,7 @@
   <body>
     <nav class="navbar" role="navigation" aria-label="main navigation">
 
-      <div class="navbar-brand is-family-secondary">
+      <div class="navbar-brand is-family-playfair-display">
         <a class="navbar-item" href="/">
           <div class="block">
             <p class="is-size-3"><span class="has-text-primary">H</span>umans <span class="has-text-primary">O</span>f <span class="has-text-primary">G</span>renoble</p>

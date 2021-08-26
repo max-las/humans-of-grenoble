@@ -12,10 +12,6 @@ $(function() {
     $("#confirmModal .confirmButton").off("click.tmp");
     $(this).closest(".modal").removeClass("is-active");
   });
-
-  $(".storyPreview").click(function(){
-    location.href = "/story/" + $(this).attr("data-id");
-  });
 });
 
 const animateCSS = (element, animation, prefix = 'animate__') => new Promise((resolve, reject) => {
