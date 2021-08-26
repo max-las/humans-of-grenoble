@@ -1,0 +1,18 @@
+@charset "utf-8";
+
+$primary: hsl(229, 53%, 53%);
+$family-secondary: "STIX Two Text script=latin rev=2";
+
+@import "../extra/bulma/bulma.sass";
+
+.dot {
+  height: 10px;
+  width: 10px;
+  background-color: $primary;
+  border-radius: 50%;
+  display: inline-block;
+  &.big {
+    height: 25px;
+    width: 25px;
+  }
+}

@@ -1,0 +1,53 @@
+.ellipsised {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.display-new-lines {
+  white-space: pre-line;
+}
+
+.storyPreview {
+  cursor: pointer;
+  transition: transform .3s;
+}
+
+.storyPreview:hover {
+  transform: scale(1.1);
+}
+
+.home {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.home.background {
+  background-image: url("/static/img/grenoble.jpg");
+  background-size: cover;
+  z-index: 90;
+}
+
+.home.over-bg {
+  z-index: 91;
+}
+
+.home.over-bg > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.home.over-bg .just-white{
+  opacity: 0.8;
+}
+
+.font-big {
+  font-size: 80px;
+}
