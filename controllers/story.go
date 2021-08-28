@@ -21,6 +21,12 @@ func (c *StoryController) Get() {
 		c.Abort("404")
 	}
 
+	storyJustAdded, ok := c.GetSession("storyJustAdded").(int64)
+	if(ok && storyJustAdded == id){
+		c.Data["JustAdded"] = true
+		c.DelSession("storyJustAdded")
+	}
+
 	story, err := models.GetStoryById(id)
 	if(err != nil){
 		if(err == orm.ErrNoRows){

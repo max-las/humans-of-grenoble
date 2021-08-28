@@ -9,14 +9,12 @@ $(function() {
       $(".file").addClass("has-name");
       $("#imageField .file-name").removeClass("is-hidden");
 
-      if(file.type != "image/jpeg" && file.type != "image/png" && file.type != "image/gif"){
-        $("#fileError .message-body").html("Format de fichier non pris en charge.<br>Les formats acceptés sont : JPG, PNG et GIF.");
-        $("#fileError").removeClass("is-hidden");
-      }else if(file.size > (50 << (10 * 2))){ // > 50MB
-        $("#fileError .message-body").html("Ce fichier dépasse la taille maximum de 50 Mo.");
+      if(file.type != "image/jpeg" && file.type != "image/png"){
+        $("#fileError .message-body").html("Format de fichier non pris en charge.<br>Les formats acceptés sont : JPG et PNG.");
         $("#fileError").removeClass("is-hidden");
       }else{
-        resizeImage(file, function(){
+        resizeImage(file, function(resized){
+          resizedImage = resized;
           $("#fileError").addClass("is-hidden");
           $("#preview img").attr("src", URL.createObjectURL(resizedImage));
           $("#preview").removeClass("is-hidden");
@@ -42,6 +40,7 @@ function upload(event) {
       $("#sendButton").addClass("is-hidden");
       $("#sendingButton").removeClass("is-hidden");
       var data = new FormData(storyForm);
+      data.set("imageFile", resizedImage);
       var ajax = new XMLHttpRequest();
       ajax.upload.addEventListener("progress", function(event) {
         var percent = Math.round((event.loaded / event.total) * 100);
@@ -52,8 +51,7 @@ function upload(event) {
         $("#sendButton").removeClass("is-hidden");
         $("#sendingButton").addClass("is-hidden");
         if(event.target.status == 200){
-          clearForm();
-          modAlert("success", "La story a été publiée !");
+          window.location.href = event.target.responseText;
         }else{
           modAlert("failure", "Le serveur a répondu par une erreur " + event.target.status + ".");
         }
@@ -105,11 +103,12 @@ function resizeImage(imageFile, callback){
     canvas.height = heightAfter;
     ctx.drawImage(imgBefore, 0, 0, widthAfter, heightAfter);
     canvas.toBlob(function(blob){
-      resizedImage = new File([blob], imageFile.name, {
-        type: "image/png"
+      var filename = imageFile.name.substring(0, imageFile.name.lastIndexOf(".")) + ".jpg";
+      var result = new File([blob], filename, {
+        type: "image/jpeg"
       });
-      callback();
-    }, "image/png");
+      callback(result);
+    }, "image/jpeg", 0.70);
   };
   imgBefore.src = URL.createObjectURL(imageFile);
 }

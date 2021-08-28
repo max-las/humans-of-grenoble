@@ -38,7 +38,7 @@
       <div class="field">
         <label class="label">Texte</label>
         <div class="control">
-          <textarea class="textarea" name="text" placeholder="Un beau jour..." required></textarea>
+          <textarea class="textarea" id="text" name="text" placeholder="Un beau jour..." required></textarea>
         </div>
       </div>
 

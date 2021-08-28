@@ -2,16 +2,6 @@
 
 $primary: hsl(229, 53%, 53%);
 
-@import "../extra/bulma/bulma.sass";
+$family-primary: 'Lora', serif;
 
-.dot {
-  height: 10px;
-  width: 10px;
-  background-color: $primary;
-  border-radius: 50%;
-  display: inline-block;
-  &.big {
-    height: 25px;
-    width: 25px;
-  }
-}
+@import "../extra/bulma/bulma.sass";

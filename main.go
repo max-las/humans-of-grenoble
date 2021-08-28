@@ -30,7 +30,7 @@ func main() {
 	beego.BConfig.WebConfig.Session.SessionGCMaxLifetime = 15768000
 	beego.BConfig.WebConfig.Session.SessionCookieLifeTime = 15768000
 
-	beego.BConfig.MaxUploadSize = 50 << (10 * 2) // 50 MB
+	beego.BConfig.MaxUploadSize = 1000000 // 1 MB
 
 	var FilterStatic = func(ctx *context.Context) {
 		sess, _ := beego.GlobalSessions.SessionStart(ctx.ResponseWriter, ctx.Request)

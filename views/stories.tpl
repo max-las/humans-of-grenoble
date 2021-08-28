@@ -9,7 +9,7 @@
             <div class="box has-background-light storyPreview">
               <a href="/story/{{$story.Id}}">
                 <img src="{{$story.PhotoUrl}}">
-                <div class="content has-text-dark is-family-lora">
+                <div class="content has-text-dark">
                   <p class="ellipsised display-new-lines">“{{$story.Text}}”</p>
                 </div>
               </a>

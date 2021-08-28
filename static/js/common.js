@@ -40,18 +40,12 @@ function modAlert(status, message){
   }
 }
 
-function modalConfirm(message, status, confirmText, callback){
-  $("#confirmModal .modal-card-body").html(message);
+function modalConfirm(title, content, confirmText, callback){
+  $("#confirmModal .modal-card-title").text(title);
+  $("#confirmModal .modal-card-body").html(content);
 
   var confirmButton = $("#confirmModal .confirmButton");
   confirmButton.html(confirmText);
-  confirmButton.attr("class", "button confirmButton");
-  if(status == "info"){
-    confirmButton.addClass("is-info");
-  }
-  if(status == "danger"){
-    confirmButton.addClass("is-danger");
-  }
 
   confirmButton.one("click.tmp", callback);
 

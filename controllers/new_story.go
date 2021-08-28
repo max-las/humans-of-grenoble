@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 	"net/http"
+	"strconv"
 	"github.com/max-las/humans-of-grenoble/models"
 )
 
@@ -24,20 +25,19 @@ func (c *NewStoryController) Post() {
 	text := c.GetString("text")
   _, header, err := c.GetFile("imageFile")
 	if(text == ""){
-		c.Abort("403")
+		c.Abort("400")
 	}
 	if(err != nil){
 		if(err == http.ErrMissingFile){
-			fmt.Println("missing file")
-			c.Abort("403")
+			c.Abort("400")
 		}else{
 			fmt.Println(err.Error())
 			c.Abort("500")
 		}
 	}else{
 		mimeType := header.Header["Content-Type"][0]
-		if(mimeType != "image/jpeg" && mimeType != "image/png" && mimeType != "image/gif"){
-			c.Abort("403")
+		if(mimeType != "image/jpeg"){
+			c.Abort("400")
 		}else{
 			savePath := "static/photos/" + time.Now().Format("02012006150405") + "-" + header.Filename
 			err := c.SaveToFile("imageFile", savePath);
@@ -50,13 +50,15 @@ func (c *NewStoryController) Post() {
 					Text: text,
 				}
 
-				_, err = models.AddStory(&story)
+				id, err := models.AddStory(&story)
 				if(err != nil){
 					fmt.Println(err.Error())
 					c.Abort("500")
 				}
 
-				c.Data["Message"] = "OK"
+				c.SetSession("storyJustAdded", id)
+
+				c.Data["Message"] = "/story/" + strconv.FormatInt(id, 10)
 				c.TplName = "dev/simpleMessage.tpl"
 			}
 		}

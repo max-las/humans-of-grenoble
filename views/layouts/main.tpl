@@ -38,23 +38,15 @@
 
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
-          <a class="navbar-item is-family-sans-serif" href="/stories">
+          <a class="navbar-item" href="/stories">
             <span>Stories</span>
           </a>
 
-          <div class="navbar-item">
-            <div class="dot"></div>
-          </div>
-
-          <a class="navbar-item is-family-sans-serif" href="/projet">
+          <a class="navbar-item" href="/projet">
             <span>Projet</span>
           </a>
 
-          <div class="navbar-item">
-            <div class="dot"></div>
-          </div>
-
-          <a class="navbar-item is-family-sans-serif" href="/auteure">
+          <a class="navbar-item" href="/auteure">
             <span>Auteure</span>
           </a>
         </div>
@@ -112,14 +104,14 @@
 
     <div class="modal" id="confirmModal">
       <div class="modal-background"></div>
-      <div class="modal-card">
+      <div class="modal-card px-3">
         <header class="modal-card-head">
-          <p class="modal-card-title">Confirmation requise</p>
+          <p class="modal-card-title"></p>
           <button class="delete closeModal" aria-label="close"></button>
         </header>
         <section class="modal-card-body"></section>
         <footer class="modal-card-foot">
-          <button class="button confirmButton"></button>
+          <button class="button confirmButton is-danger"></button>
           <button class="button closeModal">Annuler</button>
         </footer>
       </div>
