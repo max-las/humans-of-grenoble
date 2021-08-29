@@ -9,14 +9,18 @@ function deleteStory(event){
 
     ajax.addEventListener("load", function(event) {
       if(event.target.status == 200){
-        animateCSS(selector, "zoomOut").then((message) => {
-          $(selector).css("opacity", "0");
-          $(selector).animate({
-            height: "0px",
-          }, 200, "swing", function(){
-            $(selector).remove();
+        if(event.target.responseText == "OK"){
+          animateCSS(selector, "zoomOut").then((message) => {
+            $(selector).css("opacity", "0");
+            $(selector).animate({
+              height: "0px",
+            }, 200, "swing", function(){
+              $(selector).remove();
+            });
           });
-        });
+        }else{
+          modAlert("failure", "Le service est buggé. Contactez l'administrateur.");
+        }
       }else{
         modAlert("failure", "Le serveur a répondu par une erreur " + event.target.status + ".");
       }

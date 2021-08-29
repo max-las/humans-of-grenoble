@@ -4,6 +4,8 @@ import (
 
   "golang.org/x/crypto/bcrypt"
   "strings"
+  "os"
+  "fmt"
 
 )
 
@@ -29,4 +31,14 @@ func FirstWords(s string, n int) string {
   }
 
   return res + "…"
+}
+
+func RemoveStaticByUrl(url string) bool{
+  filePath := strings.TrimPrefix(url, "/")
+  err := os.Remove(filePath)
+  if(err != nil){
+    fmt.Println("Failed to remove file " + filePath, err.Error())
+    return false
+  }
+  return true
 }

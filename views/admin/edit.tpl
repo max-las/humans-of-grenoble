@@ -1,14 +1,14 @@
 <section class="section">
   <div class="container">
-    <h1 class="title">Nouvelle Story</h1>
+    <h1 class="title">Éditer cette story</h1>
 
     <form id="storyForm" action="" method="post" enctype="multipart/form-data">
 
       <div class="field" id="imageField">
         <div class="control">
-          <div class="file">
+          <div class="file has-name">
             <label class="file-label">
-              <input class="file-input" id="imageFile" name="imageFile" type="file" accept="image/jpeg, image/png" required>
+              <input class="file-input" id="imageFile" name="imageFile" type="file" accept="image/jpeg, image/png">
               <span class="file-cta">
                 <span class="file-icon">
                   <i class="fas fa-upload"></i>
@@ -17,7 +17,7 @@
                   Choisir une image…
                 </span>
               </span>
-              <span class="file-name is-hidden"></span>
+              <span class="file-name">{{.PreviousFileName}}</span>
             </label>
           </div>
         </div>
@@ -27,10 +27,10 @@
         <div class="message-body"></div>
       </article>
 
-      <div class="field is-hidden" id="preview">
+      <div class="field" id="preview">
         <div class="control">
           <figure class="image">
-            <img src="about:blank" style="max-height: 500px; width: auto;">
+            <img src="{{.Story.PhotoUrl}}" style="max-height: 500px; width: auto;">
           </figure>
         </div>
       </div>
@@ -38,7 +38,7 @@
       <div class="field">
         <label class="label">Texte</label>
         <div class="control">
-          <textarea class="textarea" id="text" name="text" placeholder="Un beau jour..." required></textarea>
+          <textarea class="textarea" id="text" name="text" placeholder="Un beau jour..." required>{{.Story.Text}}</textarea>
         </div>
       </div>
 

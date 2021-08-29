@@ -15,7 +15,7 @@ type NewStoryController struct {
 
 func (c *NewStoryController) Get() {
   c.Data["PageTitle"] = "Nouvelle Story"
-  c.Data["AdditionnalScripts"] = [1]string{"/static/private/scripts/new.js"}
+  c.Data["AdditionnalScripts"] = [1]string{"/static/private/js/publish.js"}
 
   c.Layout = "layouts/main.tpl"
   c.TplName = "admin/new.tpl"
@@ -23,10 +23,12 @@ func (c *NewStoryController) Get() {
 
 func (c *NewStoryController) Post() {
 	text := c.GetString("text")
-  _, header, err := c.GetFile("imageFile")
 	if(text == ""){
 		c.Abort("400")
 	}
+
+  _, header, err := c.GetFile("imageFile")
+
 	if(err != nil){
 		if(err == http.ErrMissingFile){
 			c.Abort("400")

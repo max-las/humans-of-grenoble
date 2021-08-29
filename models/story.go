@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
-	"os"
 
 	"github.com/beego/beego/v2/client/orm"
+	"github.com/max-las/humans-of-grenoble/helpers"
 )
 
 type Story struct {
@@ -138,10 +138,7 @@ func DeleteStory(id int64) (err error) {
 		var num int64
 		if num, err = o.Delete(&Story{Id: id}); err == nil {
 			fmt.Println("Number of records deleted in database:", num)
-			err := os.Remove(strings.TrimPrefix(v.PhotoUrl, "/"))
-			if(err != nil){
-				fmt.Println("Failed to remove file:", err.Error())
-			}
+			_ = helpers.RemoveStaticByUrl(v.PhotoUrl)
 		}
 	}
 	return

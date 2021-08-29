@@ -40,7 +40,9 @@ function upload(event) {
       $("#sendButton").addClass("is-hidden");
       $("#sendingButton").removeClass("is-hidden");
       var data = new FormData(storyForm);
-      data.set("imageFile", resizedImage);
+      if(resizedImage){
+        data.set("imageFile", resizedImage);
+      }
       var ajax = new XMLHttpRequest();
       ajax.upload.addEventListener("progress", function(event) {
         var percent = Math.round((event.loaded / event.total) * 100);
@@ -65,7 +67,7 @@ function upload(event) {
         modAlert("failure", "Requête annulée.");
       }, false);
       $("progress").removeClass("is-hidden");
-      ajax.open("POST", "/admin/new");
+      ajax.open("POST", window.location);
       ajax.send(data);
     }
   }
