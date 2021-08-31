@@ -11,7 +11,6 @@ import (
 	"strings"
 
 	"github.com/max-las/humans-of-grenoble/models"
-	"github.com/max-las/humans-of-grenoble/helpers"
 )
 
 type EditStoryController struct {
@@ -72,8 +71,6 @@ func (c *EditStoryController) Post() {
 			fmt.Println(err.Error())
 			c.Abort("500")
 		}
-
-		_ = helpers.RemoveStaticByUrl(story.PhotoUrl)
 
 		story.PhotoUrl = "/" + savePath
 

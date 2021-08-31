@@ -9,6 +9,6 @@ type HomeController struct {
 }
 
 func (c *HomeController) Get() {
-	c.Layout = "layouts/main.tpl"
+	c.Layout = "layouts/home.tpl"
 	c.TplName = "home.tpl"
 }

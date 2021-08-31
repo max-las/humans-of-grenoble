@@ -6,8 +6,6 @@
 
   <body>
 
-    {{ template "layouts/sections/navAndModals.tpl" }}
-
     {{.LayoutContent}}
 
   </body>

@@ -123,6 +123,9 @@ func UpdateStoryById(m *Story) (err error) {
 		var num int64
 		if num, err = o.Update(m); err == nil {
 			fmt.Println("Number of records updated in database:", num)
+			if(v.PhotoUrl != m.PhotoUrl && m.PhotoUrl != ""){
+				_ = helpers.RemoveStaticByUrl(v.PhotoUrl)
+			}
 		}
 	}
 	return
