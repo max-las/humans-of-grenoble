@@ -2,7 +2,7 @@
 
 <html>
 
-  {{ template "layouts/sections/head.tpl" }}
+  {{ template "layouts/sections/head.tpl" . }}
 
   <body>
 

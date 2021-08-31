@@ -1,33 +1,39 @@
 var resizedImage = null;
 
 $(function() {
+  fileChange(document.getElementById("imageFile"));
+
   $("#imageFile").change(function(){
-    var file = this.files[0];
-
-    if (file) {
-      $(".file-name").html(file.name);
-      $(".file").addClass("has-name");
-      $("#imageField .file-name").removeClass("is-hidden");
-
-      if(file.type != "image/jpeg" && file.type != "image/png"){
-        $("#fileError .message-body").html("Format de fichier non pris en charge.<br>Les formats acceptés sont : JPG et PNG.");
-        $("#fileError").removeClass("is-hidden");
-      }else{
-        resizeImage(file, function(resized){
-          resizedImage = resized;
-          $("#fileError").addClass("is-hidden");
-          $("#preview img").attr("src", URL.createObjectURL(resizedImage));
-          $("#preview").removeClass("is-hidden");
-        });
-      }
-
-    }else{
-
-      clearFileInput();
-
-    }
+    fileChange(this);
   });
 });
+
+function fileChange(fileInput){
+  var file = fileInput.files[0];
+
+  if (file) {
+    $(".file-name").html(file.name);
+    $(".file").addClass("has-name");
+    $("#imageField .file-name").removeClass("is-hidden");
+
+    if(file.type != "image/jpeg" && file.type != "image/png"){
+      $("#fileError .message-body").html("Format de fichier non pris en charge.<br>Les formats acceptés sont : JPG et PNG.");
+      $("#fileError").removeClass("is-hidden");
+    }else{
+      resizeImage(file, function(resized){
+        resizedImage = resized;
+        $("#fileError").addClass("is-hidden");
+        $("#preview img").attr("src", URL.createObjectURL(resizedImage));
+        $("#preview").removeClass("is-hidden");
+      });
+    }
+
+  }else{
+
+    clearFileInput();
+
+  }
+}
 
 function upload(event) {
   var storyForm = document.getElementById("storyForm");

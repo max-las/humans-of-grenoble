@@ -2,11 +2,11 @@
 
 <html>
 
-  {{ template "layouts/sections/head.tpl" }}
+  {{ template "layouts/sections/head.tpl" . }}
 
   <body>
 
-    {{ template "layouts/sections/navAndModals.tpl" }}
+    {{ template "layouts/sections/navAndModals.tpl" . }}
 
     {{.LayoutContent}}
 

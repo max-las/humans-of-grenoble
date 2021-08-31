@@ -12,6 +12,8 @@ type AdminHomeController struct {
 }
 
 func (c *AdminHomeController) Get() {
+	c.Ctx.Output.Header("Cache-Control", "no-store")
+
   username := c.GetSession("username")
   if(username == nil){
     c.Redirect("/admin/login", 302)
