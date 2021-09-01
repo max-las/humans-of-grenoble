@@ -21,4 +21,6 @@ func init() {
 		if(runmode == "dev"){
 			beego.Router("/adduser", &controllers.AdduserController{})
 		}
+
+		beego.ErrorController(&controllers.ErrorController{})
 }

@@ -10,5 +10,7 @@
 
     {{.LayoutContent}}
 
+    {{ template "layouts/sections/footer.tpl" . }}
+    
   </body>
 </html>

@@ -44,6 +44,20 @@
   height: 100%;
 }
 
-.home.over-bg .just-white{
+.home.over-bg .just-white {
   opacity: 0.8;
+}
+
+.home .level-item a:hover {
+  border-bottom: 5px solid hsl(229, 53%, 53%);
+}
+
+.home-title {
+  font-size: 8vw;
+}
+
+@media screen and (min-width: 1024px) {
+  .home-title {
+    font-size: 5vw;
+  }
 }
