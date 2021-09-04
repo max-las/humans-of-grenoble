@@ -49,7 +49,7 @@ function upload(event) {
   if(!storyForm.checkValidity()){
     document.querySelector("#fakeSubmit").click();
   }else{
-    if(!$(".message.is-danger").not(".is-hidden").length > 0){
+    if($(".message.is-danger").not(".is-hidden").length > 0){
       animateCSS("#fileError", "headShake");
     }else{
       $("#sendButton").addClass("is-hidden");

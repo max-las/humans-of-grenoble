@@ -73,11 +73,11 @@ const animateCSS = (element, animation, prefix = 'animate__') => new Promise((re
   const animationName = `${prefix}${animation}`;
   const node = $(element);
 
-  node.addClass([`${prefix}animated`, animationName]);
+  node.addClass(`${prefix}animated ${animationName}`);
 
   function handleAnimationEnd(event) {
     event.stopPropagation();
-    node.removeClass([`${prefix}animated`, animationName]);
+    node.removeClass(`${prefix}animated ${animationName}`);
     resolve('Animation ended');
   }
 
