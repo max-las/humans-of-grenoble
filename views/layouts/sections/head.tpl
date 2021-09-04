@@ -7,12 +7,9 @@
   <link rel="stylesheet" href="/static/css/fa-all.min.css">
   <link rel="stylesheet" href="/static/css/fonts.css">
   <link rel="stylesheet" href="/static/css/style.css">
-  {{ range .AdditionnalStyles }}
-    <link rel="stylesheet" href="{{.}}">
-  {{ end }}
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cash/8.1.0/cash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
+  <script src="https://unpkg.com/@barba/core"></script>
   <script src="/static/js/common.js"></script>
-  {{ range .AdditionnalScripts }}
-    <script src="{{.}}"></script>
-  {{ end }}
+  <script src="/static/js/edit.js"></script>
 </head>

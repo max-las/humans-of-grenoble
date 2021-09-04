@@ -18,8 +18,7 @@ func (c *AdminHomeController) Get() {
   if(username == nil){
     c.Redirect("/admin/login", 302)
   }else{
-    c.Data["PageTitle"] = "Administration"
-		c.Data["AdditionnalScripts"] = [1]string{"/static/private/js/home.js"}
+    c.Data["PageTitle"] = "Administration | Humans of Grenoble"
     c.Layout = "layouts/main.tpl"
     c.TplName = "admin/home.tpl"
 

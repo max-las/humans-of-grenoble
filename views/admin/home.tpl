@@ -4,7 +4,7 @@
 
     <div class="block">
       <a class="button is-success" href="/admin/new">Nouvelle story</a>
-      <a class="button is-danger" href="/admin/logout">Déconnexion</a>
+      <button class="button is-danger" onclick="logout()">Déconnexion</button>
     </div>
 
     <div class="block">

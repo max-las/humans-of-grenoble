@@ -4,13 +4,21 @@
 
   {{ template "layouts/sections/head.tpl" . }}
 
-  <body>
+  <body data-barba="wrapper">
 
-    {{ template "layouts/sections/navAndModals.tpl" . }}
+    <main data-barba="container" data-barba-namespace="main">
 
-    {{.LayoutContent}}
+      {{ template "layouts/sections/navAndModals.tpl" . }}
 
-    {{ template "layouts/sections/footer.tpl" . }}
-    
+      <div class="barba-content">
+
+        {{.LayoutContent}}
+
+      </div>
+
+      {{ template "layouts/sections/footer.tpl" . }}
+
+    </main>
+
   </body>
 </html>

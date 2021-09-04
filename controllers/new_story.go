@@ -14,8 +14,7 @@ type NewStoryController struct {
 }
 
 func (c *NewStoryController) Get() {
-  c.Data["PageTitle"] = "Nouvelle Story"
-  c.Data["AdditionnalScripts"] = [1]string{"/static/private/js/publish.js"}
+  c.Data["PageTitle"] = "Nouvelle story | Humans of Grenoble"
 
   c.Layout = "layouts/main.tpl"
   c.TplName = "admin/new.tpl"

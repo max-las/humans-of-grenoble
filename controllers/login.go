@@ -13,10 +13,10 @@ type LoginController struct {
 
 func (c *LoginController) Prepare() {
 	username := c.GetSession("username")
-	if(username != nil){
+	if(username != nil && !c.Ctx.Input.Is("DELETE")){
 		c.Redirect("/admin", 303)
 	}else{
-		c.Data["PageTitle"] = "Connexion"
+		c.Data["PageTitle"] = "Connexion | Humans of Grenoble"
 
 		c.Layout = "layouts/main.tpl"
 		c.TplName = "admin/login.tpl"
@@ -55,4 +55,10 @@ func (c *LoginController) Post() {
 			c.Redirect("/admin", 303)
 		}
 	}
+}
+
+func (c *LoginController) Delete() {
+	c.DelSession("username")
+	c.SetSession("logout", true)
+	c.Ctx.Output.Body([]byte("OK"))
 }

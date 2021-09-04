@@ -2,6 +2,7 @@ package controllers
 
 import (
     "github.com/beego/beego/v2/server/web"
+    "strconv"
 )
 
 type ErrorController struct {
@@ -10,6 +11,7 @@ type ErrorController struct {
 
 func (c *ErrorController) Prepare() {
     c.TplName = "dev/simpleMessage.tpl"
+    c.Data["PageTitle"] = strconv.Itoa(c.Ctx.Output.Status) + " | Humans of Grenoble"
 }
 
 func (c *ErrorController) Error403() {

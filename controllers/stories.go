@@ -12,6 +12,7 @@ type StoriesController struct {
 }
 
 func (c *StoriesController) Get() {
+	c.Data["PageTitle"] = "Stories | Humans of Grenoble"
 	c.Layout = "layouts/main.tpl"
 	c.TplName = "stories.tpl"
 

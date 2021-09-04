@@ -54,7 +54,5 @@ func main() {
 	beego.InsertFilter("/static/private/*", beego.BeforeStatic, FilterStatic)
 	beego.InsertFilter("/admin/*", beego.BeforeRouter, FilterAuth)
 
-
-
 	beego.Run()
 }

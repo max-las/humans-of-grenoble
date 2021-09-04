@@ -2,7 +2,7 @@
   <div class="container">
     <h1 class="title">Éditer cette story</h1>
 
-    <form id="storyForm" action="" method="post" enctype="multipart/form-data">
+    <form id="storyForm" data-mode="edit" action="" method="post" enctype="multipart/form-data">
 
       <div class="field" id="imageField">
         <div class="control">

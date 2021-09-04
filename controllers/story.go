@@ -36,7 +36,7 @@ func (c *StoryController) Get() {
 		}
 	}
 
-	c.Data["PageTitle"] = helpers.FirstWords(story.Text, 3)
+	c.Data["PageTitle"] = helpers.FirstWords(story.Text, 3) + " | Humans of Grenoble"
 	c.Data["PhotoUrl"] = story.PhotoUrl
 	c.Data["Text"] = story.Text
 }

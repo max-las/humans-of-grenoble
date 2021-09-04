@@ -2,7 +2,7 @@
   <div class="container">
     <h1 class="title">Nouvelle Story</h1>
 
-    <form id="storyForm" action="" method="post" enctype="multipart/form-data">
+    <form id="storyForm" data-mode="new" action="" method="post" enctype="multipart/form-data">
 
       <div class="field" id="imageField">
         <div class="control">
@@ -30,7 +30,7 @@
       <div class="field is-hidden" id="preview">
         <div class="control">
           <figure class="image">
-            <img src="about:blank" style="max-height: 500px; width: auto;">
+            <img src="" style="max-height: 500px; width: auto;">
           </figure>
         </div>
       </div>

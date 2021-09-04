@@ -34,8 +34,7 @@ func (c *EditStoryController) Prepare() {
 }
 
 func (c *EditStoryController) Get() {
-	c.Data["PageTitle"] = "Édition"
-	c.Data["AdditionnalScripts"] = [1]string{"/static/private/js/publish.js"}
+	c.Data["PageTitle"] = "Édition | Humans of Grenoble"
 
   c.Layout = "layouts/main.tpl"
   c.TplName = "admin/edit.tpl"

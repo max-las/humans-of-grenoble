@@ -9,6 +9,7 @@ type HomeController struct {
 }
 
 func (c *HomeController) Get() {
+	c.Data["PageTitle"] = "Humans of Grenoble"
 	c.Layout = "layouts/home.tpl"
 	c.TplName = "home.tpl"
 }

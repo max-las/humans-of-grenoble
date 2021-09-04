@@ -4,9 +4,13 @@
 
   {{ template "layouts/sections/head.tpl" . }}
 
-  <body>
+  <body data-barba="wrapper">
 
-    {{.LayoutContent}}
+    <main data-barba="container" data-barba-namespace="home">
+
+      {{.LayoutContent}}
+
+    </main>
 
   </body>
 </html>
