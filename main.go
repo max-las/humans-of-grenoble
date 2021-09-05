@@ -9,13 +9,20 @@ import (
 	"github.com/beego/beego/v2/server/web/context"
 
 	"strings"
+	"strconv"
 	"os"
 )
 
 func init() {
+	var err error
+
+	beego.BConfig.Listen.HTTPPort, err = strconv.Atoi(os.Getenv("PORT"))
+	if(err != nil){
+		beego.BConfig.Listen.HTTPPort = 8080
+	}
 
 	orm.RegisterDriver("postgres", orm.DRPostgres)
-	orm.RegisterDataBase("default", "postgres", os.Getenv("DB_STRING"))
+	orm.RegisterDataBase("default", "postgres", os.Getenv("DATABASE_URL"))
 
 }
 
