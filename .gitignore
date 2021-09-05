@@ -25,3 +25,6 @@ static/photos/*
 
 secrets/*
 !secrets/secret.go.example
+
+*.bat
+!run-sass.bat

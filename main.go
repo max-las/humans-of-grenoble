@@ -8,15 +8,14 @@ import (
 	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/server/web/context"
 
-	"github.com/max-las/humans-of-grenoble/secrets"
-
 	"strings"
+	"os"
 )
 
 func init() {
 
 	orm.RegisterDriver("postgres", orm.DRPostgres)
-	orm.RegisterDataBase("default", "postgres", secrets.DB_String)
+	orm.RegisterDataBase("default", "postgres", os.Getenv("DB_STRING"))
 
 }
 
