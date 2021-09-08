@@ -64,7 +64,9 @@ function initNavAndModals(){
   });
 
   $(".closeModal, .modal-background, #confirmModal .confirmButton").on("click", function(){
-    $("#confirmModal .confirmButton").off("click.tmp");
+    setTimeout(function(){
+      $("#confirmModal .confirmButton").off("click.tmp");
+    });
     $(this).closest(".modal").removeClass("is-active");
   });
 }

@@ -41,7 +41,7 @@ func (c *NewStoryController) Post() {
 			c.Abort("400")
 		}else{
 			savePath := "static/photos/" + time.Now().Format("02012006150405") + "-" + header.Filename
-			err := c.SaveToFile("imageFile", savePath);
+			err = c.SaveToFile("imageFile", savePath);
 			if(err != nil){
 				fmt.Println(err.Error())
 				c.Abort("500")

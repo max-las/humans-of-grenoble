@@ -49,7 +49,7 @@ function upload(event) {
   if(!storyForm.checkValidity()){
     document.querySelector("#fakeSubmit").click();
   }else{
-    if($(".message.is-danger").not(".is-hidden").length > 0){
+    if($("#storyForm .message.is-danger").not(".is-hidden").length > 0){
       animateCSS("#fileError", "headShake");
     }else{
       $("#sendButton").addClass("is-hidden");
@@ -141,14 +141,9 @@ function deleteStory(event){
 
     ajax.addEventListener("load", function(event) {
       if(event.target.status == 200){
-        if(event.target.responseText == "OK"){
+        if(event.target.responseText.trim() == "OK"){
           animateCSS(selector, "zoomOut").then((message) => {
-            $(selector).css("opacity", "0");
-            $(selector).animate({
-              height: "0px",
-            }, 200, "swing", function(){
-              $(selector).remove();
-            });
+            $(selector).remove();
           });
         }else{
           modAlert("failure", "Le service est buggé. Contactez l'administrateur.");
@@ -175,7 +170,7 @@ function logout(){
   let ajax = new XMLHttpRequest();
   ajax.addEventListener("load", function(event) {
     if(event.target.status == 200){
-      if(event.target.responseText == "OK"){
+      if(event.target.responseText.trim() == "OK"){
         window.location.href = "/admin/login";
       }else{
         modAlert("failure", event.target.responseText);
