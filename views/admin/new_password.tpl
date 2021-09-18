@@ -21,10 +21,18 @@
       <div class="field">
         <div class="control">
           <button type="button" id="sendButton" class="button is-outlined is-link" onclick="updatePassword(event)">Valider</button>
+          <button type="button" id="sendingButton" class="button is-outlined is-hidden">
+            <span class="icon">
+              <i class="fas fa-circle-notch fa-spin"></i>
+            </span>
+            <span>Traitement en cours...</span>
+          </button>
         </div>
       </div>
 
       <input type="submit" class="is-hidden" id="fakeSubmit">
+
+      <div class="notify"></div>
 
     </form>
   </div>

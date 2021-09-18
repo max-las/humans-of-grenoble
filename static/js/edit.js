@@ -114,7 +114,7 @@ function cloudinaryUpload(data) {
       var percent = Math.round((event.loaded / event.total) * 100);
       $("progress").val(percent);
       $("progress").html(percent + "%");
-    }, false);
+    });
     ajax.addEventListener("load", function(event) {
       $("#sendButton").removeClass("is-hidden");
       $("#sendingButton").addClass("is-hidden");
@@ -123,15 +123,15 @@ function cloudinaryUpload(data) {
       }else{
         reject("Le serveur a répondu par une erreur " + event.target.status + ".");
       }
-    }, false);
+    });
     ajax.addEventListener("error", function(event) {
       $("#sendButton").removeClass("is-hidden");
       $("#sendingButton").addClass("is-hidden");
       reject("Le serveur est injoignable.");
-    }, false);
+    });
     ajax.addEventListener("abort", function(event) {
       reject("Requête annulée.");
-    }, false);
+    });
     $("progress").removeClass("is-hidden");
     ajax.open("POST", "https://api.cloudinary.com/v1_1/dehn7bofz/image/upload");
     ajax.send(data);
@@ -148,13 +148,13 @@ function fetchCloudinarySign(data) {
       }else{
         reject("Le serveur a répondu par une erreur " + event.target.status + ".");
       }
-    }, false);
+    });
     ajax.addEventListener("error", function(event) {
       reject("Le serveur est injoignable.");
-    }, false);
+    });
     ajax.addEventListener("abort", function(event) {
       reject("Requête annulée.");
-    }, false);
+    });
     ajax.open("POST", "/admin/cloudinary");
     ajax.send(data);
   });
@@ -169,13 +169,13 @@ function setStory(data) {
       }else{
         reject("Le serveur a répondu par une erreur " + event.target.status + ".");
       }
-    }, false);
+    });
     ajax.addEventListener("error", function(event) {
       reject("Le serveur est injoignable.");
-    }, false);
+    });
     ajax.addEventListener("abort", function(event) {
       reject("Requête annulée.");
-    }, false);
+    });
     ajax.open("POST", window.location.href)
     ajax.send(data);
   });
@@ -244,15 +244,15 @@ function deleteStory(event){
       }else{
         modAlert("failure", "Le serveur a répondu par une erreur " + event.target.status + ".");
       }
-    }, false);
+    });
 
     ajax.addEventListener("error", function(event) {
       modAlert("failure", "Le serveur est injoignable.");
-    }, false);
+    });
 
     ajax.addEventListener("abort", function(event) {
       modAlert("failure", "Requête annulée.");
-    }, false);
+    });
 
     ajax.open("DELETE", "/admin/edit/" + id);
     ajax.send();
@@ -260,32 +260,56 @@ function deleteStory(event){
 }
 
 function updatePassword(event){
-  var newPassForm = document.querySelector("#newPassForm");
-  let data = new FormData(newPassForm);
+  document.querySelector(".notify").innerHtml = "";
 
-  let ajax = new XMLHttpRequest();
-  ajax.addEventListener("load", function(event) {
-    if(event.target.status == 200){
-      if(event.target.responseText.trim() == "OK"){
-        modAlert("success", "Mis à jour");
-      }else{
-        modAlert("failure", "Une erreur inattendue est survenue. Contactez l'administrateur.");
-      }
+  let newPassForm = document.querySelector("#newPassForm");
+
+  if(!newPassForm.checkValidity()){
+    document.querySelector("#fakeSubmit").click();
+  }else{
+    let data = new FormData(newPassForm);
+
+    var password = data.get("password");
+    var passwordConfirm = data.get("password-confirm");
+    if(password != passwordConfirm){
+      notify("failure", "Le mot de passe et sa confirmation sont différents.")
     }else{
-      modAlert("failure", "Le serveur a répondu par une erreur " + event.target.status + ".");
+      document.querySelector("#sendButton").classList.add("is-hidden");
+      document.querySelector("#sendingButton").classList.remove("is-hidden");
+
+      let ajax = new XMLHttpRequest();
+      ajax.addEventListener("load", function(event) {
+        if(event.target.status == 200){
+          if(event.target.responseText.trim() == "OK"){
+            newPassForm.reset();
+            notify("success", "Le mot de passe a été mis à jour.");
+          }else{
+            notify("failure", "Une erreur inattendue est survenue. Contactez l'administrateur.");
+          }
+        }else{
+          notify("failure", "Le serveur a répondu par une erreur " + event.target.status + ".");
+        }
+      });
+
+      ajax.addEventListener("error", function(event) {
+        notify("failure", "Le serveur est injoignable.");
+      });
+
+      ajax.addEventListener("loadend", function(event) {
+        document.querySelector("#sendButton").classList.remove("is-hidden");
+        document.querySelector("#sendingButton").classList.add("is-hidden");
+      });
+
+      ajax.addEventListener("abort", function(event) {
+        document.querySelector("#sendButton").classList.remove("is-hidden");
+        document.querySelector("#sendingButton").classList.add("is-hidden");
+        notify("failure", "Requête annulée.");
+      });
+
+      ajax.open("POST", "/admin/new-password");
+      ajax.send(data);
     }
-  }, false);
-
-  ajax.addEventListener("error", function(event) {
-    modAlert("failure", "Le serveur est injoignable.");
-  }, false);
-
-  ajax.addEventListener("abort", function(event) {
-    modAlert("failure", "Requête annulée.");
-  }, false);
-
-  ajax.open("POST", "/admin/new-password");
-  ajax.send(data);
+  }
 }
 
 function logout(){
@@ -300,16 +324,47 @@ function logout(){
     }else{
       modAlert("failure", "Le serveur a répondu par une erreur " + event.target.status + ".");
     }
-  }, false);
+  });
 
   ajax.addEventListener("error", function(event) {
     modAlert("failure", "Le serveur est injoignable.");
-  }, false);
+  });
 
   ajax.addEventListener("abort", function(event) {
     modAlert("failure", "Requête annulée.");
-  }, false);
+  });
 
   ajax.open("DELETE", "/admin/login");
   ajax.send();
+}
+
+function notify(status, message){
+  var notif = document.createElement("div");
+  notif.classList.add("notification");
+  if(status == "success"){
+    notif.classList.add("is-success");
+  }
+  if(status == "failure"){
+    notif.classList.add("is-danger");
+  }
+
+  var closeButton = document.createElement("button");
+  closeButton.setAttribute("type", "button");
+  closeButton.classList.add("delete");
+  closeButton.addEventListener("click", function(){
+    let notif = $(this).closest(".notification");
+    animateCSS(notif, "zoomOut")
+    .then(function(){
+      notif.remove();
+    })
+  });
+
+  var text = document.createTextNode(message);
+
+  notif.appendChild(closeButton);
+  notif.appendChild(text);
+
+  document.querySelector(".notify").appendChild(notif);
+
+  animateCSS(notif, "slideInUp");
 }
