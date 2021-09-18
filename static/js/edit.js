@@ -46,7 +46,7 @@ function fileChange(fileInput){
 }
 
 function uploadStory(event) {
-  var storyForm = document.getElementById("storyForm");
+  let storyForm = document.getElementById("storyForm");
   if(!storyForm.checkValidity()){
     document.querySelector("#fakeSubmit").click();
   }else{
@@ -76,28 +76,36 @@ function uploadStory(event) {
             localData.set("photoPublicId", res.public_id)
             setStory(localData)
             .then(function(storyUrl){
-              window.location.href = storyUrl
+              if(mode == "new"){
+                clearForm();
+                notify("success", "Story publiée avec succès.")
+              }
+              if(mode == "edit"){
+                clearProgress();
+                notify("success", "Story éditée avec succès.")
+              }
             })
             .catch(function(error){
-              modAlert("failure", error)
+              notify("failure", error)
             })
           })
           .catch(function(error){
-            modAlert("failure", error);
+            notify("failure", error);
           });
         })
         .catch(function(error) {
-          modAlert("failure", error);
+          notify("failure", error);
         });
 
       }else{
 
         setStory(localData)
         .then(function(storyUrl){
-          window.location.href = storyUrl
+          clearProgress();
+          notify("success", "Story éditée avec succès.")
         })
         .catch(function(error){
-          modAlert("failure", error)
+          notify("failure", error)
         })
 
       }
@@ -116,8 +124,6 @@ function cloudinaryUpload(data) {
       $("progress").html(percent + "%");
     });
     ajax.addEventListener("load", function(event) {
-      $("#sendButton").removeClass("is-hidden");
-      $("#sendingButton").addClass("is-hidden");
       if(event.target.status == 200){
         resolve(event.target.response);
       }else{
@@ -125,8 +131,6 @@ function cloudinaryUpload(data) {
       }
     });
     ajax.addEventListener("error", function(event) {
-      $("#sendButton").removeClass("is-hidden");
-      $("#sendingButton").addClass("is-hidden");
       reject("Le serveur est injoignable.");
     });
     ajax.addEventListener("abort", function(event) {
@@ -173,7 +177,13 @@ function setStory(data) {
     ajax.addEventListener("error", function(event) {
       reject("Le serveur est injoignable.");
     });
+    ajax.addEventListener("loadend", function(event) {
+      document.querySelector("#sendButton").classList.remove("is-hidden");
+      document.querySelector("#sendingButton").classList.add("is-hidden");
+    });
     ajax.addEventListener("abort", function(event) {
+      document.querySelector("#sendButton").classList.remove("is-hidden");
+      document.querySelector("#sendingButton").classList.add("is-hidden");
       reject("Requête annulée.");
     });
     ajax.open("POST", window.location.href)
@@ -183,16 +193,20 @@ function setStory(data) {
 
 function clearForm(){
   document.getElementById("storyForm").reset();
-  clearFileInput();
-  $("progress").addClass("is-hidden");
-  $("progress").val(0);
-  $("progress").html("");
+  clearFileInputStyle();
+  clearProgress();
 }
 
 function clearFileInputStyle(){
   $("#preview, #imageField .file-name").addClass("is-hidden");
   $("#imageField .file").removeClass("has-name");
   $("#imageField .file-name").html("");
+}
+
+function clearProgress(){
+  $("progress").addClass("is-hidden");
+  $("progress").val(0);
+  $("progress").html("");
 }
 
 function resizeImage(imageFile, callback){

@@ -62,6 +62,8 @@
 
       <input type="submit" class="is-hidden" id="fakeSubmit">
 
+      <div class="notify"></div>
+
     </form>
   </div>
 </section>

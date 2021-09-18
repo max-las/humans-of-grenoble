@@ -39,8 +39,6 @@ func (c *NewStoryController) Post() {
 		c.Abort("500")
 	}
 
-	c.SetSession("storyJustAdded", id)
-
 	c.Data["Message"] = "/story/" + strconv.FormatInt(id, 10)
 	c.TplName = "dev/simpleMessage.tpl"
 }
