@@ -28,12 +28,15 @@ function fileChange(fileInput){
       $("#fileError .message-body").html("Format de fichier non pris en charge.<br>Les formats acceptés sont : JPG et PNG.");
       $("#fileError").removeClass("is-hidden");
     }else{
-      resizeImage(file, function(resized){
-        resizedImage = resized;
-        $("#fileError").addClass("is-hidden");
-        $("#preview img").attr("src", URL.createObjectURL(resizedImage));
-        $("#preview").removeClass("is-hidden");
-      });
+      if(file.size < 800000){
+        resizedImage = file;
+        showPreview();
+      }else{
+        resizeImage(file, function(resized){
+          resizedImage = resized;
+          showPreview();
+        });
+      }
     }
 
   }else{
@@ -43,6 +46,12 @@ function fileChange(fileInput){
     }
 
   }
+}
+
+function showPreview(){
+  $("#fileError").addClass("is-hidden");
+  $("#preview img").attr("src", URL.createObjectURL(resizedImage));
+  $("#preview").removeClass("is-hidden");
 }
 
 function uploadStory(event) {
