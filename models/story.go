@@ -11,9 +11,10 @@ import (
 )
 
 type Story struct {
-	Id       int64  `orm:"auto"`
-	PhotoUrl string `orm:"size(128)"`
-	Text     string `orm:"type(longtext)"`
+	Id       			int64  `orm:"auto"`
+	PhotoUrl 			string `orm:"size(128)"`
+	PhotoPublicId string `orm:"size(128)"`
+	Text     			string `orm:"type(longtext)"`
 }
 
 func init() {
@@ -120,11 +121,16 @@ func UpdateStoryById(m *Story) (err error) {
 	v := Story{Id: m.Id}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {
-		var num int64
-		if num, err = o.Update(m); err == nil {
-			fmt.Println("Number of records updated in database:", num)
+		if _, err = o.Update(m); err == nil {
+			fmt.Println("Updated story ", m.Id)
 			if(v.PhotoUrl != m.PhotoUrl && m.PhotoUrl != ""){
-				_ = helpers.RemoveStaticByUrl(v.PhotoUrl)
+				res, err := helpers.RemoveCldAsset(v.PhotoPublicId)
+				if(err != nil){
+					fmt.Println("Error removing asset:", err)
+				}else{
+					fmt.Println("Result:", res.Result)
+					fmt.Println("Error:", res.Error)
+				}
 			}
 		}
 	}
@@ -138,10 +144,15 @@ func DeleteStory(id int64) (err error) {
 	v := Story{Id: id}
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {
-		var num int64
-		if num, err = o.Delete(&Story{Id: id}); err == nil {
-			fmt.Println("Number of records deleted in database:", num)
-			_ = helpers.RemoveStaticByUrl(v.PhotoUrl)
+		if _, err = o.Delete(&Story{Id: id}); err == nil {
+			fmt.Println("Deleted story ", id)
+			res, err := helpers.RemoveCldAsset(v.PhotoPublicId)
+			if(err != nil){
+				fmt.Println("Error removing asset:", err)
+			}else{
+				fmt.Println("Result:", res.Result)
+				fmt.Println("Error:", res.Error)
+			}
 		}
 	}
 	return

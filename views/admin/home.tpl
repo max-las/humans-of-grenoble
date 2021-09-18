@@ -3,8 +3,24 @@
     <h1 class="title">Administration</h1>
 
     <div class="block">
-      <a class="button is-success" href="/admin/new">Nouvelle story</a>
-      <button class="button is-danger" onclick="logout()">Déconnexion</button>
+      <a class="button is-success" href="/admin/new">
+        <span class="icon">
+          <i class="fas fa-plus"></i>
+        </span>
+        <span>Nouvelle story</span>
+      </a>
+      <a class="button is-warning" href="/admin/new-password">
+        <span class="icon">
+          <i class="fas fa-lock"></i>
+        </span>
+        <span>Changer de mot de passe</span>
+      </a>
+      <button class="button is-danger" onclick="logout()">
+        <span class="icon">
+          <i class="fas fa-power-off"></i>
+        </span>
+        <span>Déconnexion</span>
+      </button>
     </div>
 
     <div class="block">
@@ -19,8 +35,18 @@
             </div>
             <div class="column is-one-quarter is-flex is-justify-content-center is-align-items-center">
               <div class="buttons">
-                <a class="button is-info" href="/admin/edit/{{.Id}}">Éditer</a>
-                <button class="button is-danger" onclick="deleteStory(event)">Supprimer</button>
+                <a class="button is-info" href="/admin/edit/{{.Id}}">
+                  <span class="icon">
+                    <i class="fas fa-edit"></i>
+                  </span>
+                  <span>Éditer</span>
+                </a>
+                <button class="button is-danger" onclick="deleteStory(event)">
+                  <span class="icon">
+                    <i class="fas fa-trash-alt"></i>
+                  </span>
+                  <span>Supprimer</span>
+                </button>
               </div>
             </div>
           </div>

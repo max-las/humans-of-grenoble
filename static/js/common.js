@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function(){
   barba.init({
     transitions: [{
-      name: 'main-to-main',
+      name: 'main-main',
       to: {
         custom: function(data){
           return data.current.container.querySelector("#mainNavbar") !== null && data.next.container.querySelector("#mainNavbar") !== null;
@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", function(){
           opacity: 0
         });
       },
-      enter(data) {
-        return gsap.from(data.next.container.querySelector(".barba-content"), {
+      afterLeave(data) {
+        gsap.from(data.next.container.querySelector(".barba-content"), {
           opacity: 0
         });
       }
@@ -31,8 +31,8 @@ document.addEventListener("DOMContentLoaded", function(){
           opacity: 0
         });
       },
-      enter(data) {
-        return gsap.from(data.next.container, {
+      afterLeave(data) {
+        gsap.from(data.next.container, {
           opacity: 0
         });
       }

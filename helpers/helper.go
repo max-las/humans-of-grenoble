@@ -5,7 +5,12 @@ import (
   "golang.org/x/crypto/bcrypt"
   "strings"
   "os"
+  "context"
+  "time"
   "fmt"
+
+  "github.com/cloudinary/cloudinary-go"
+  "github.com/cloudinary/cloudinary-go/api/uploader"
 
 )
 
@@ -33,12 +38,16 @@ func FirstWords(s string, n int) string {
   return res + "…"
 }
 
-func RemoveStaticByUrl(url string) bool{
-  filePath := strings.TrimPrefix(url, "/")
-  err := os.Remove(filePath)
-  if(err != nil){
-    fmt.Println("Failed to remove file " + filePath, err.Error())
-    return false
-  }
-  return true
+func RemoveCldAsset(public_id string) (*uploader.DestroyResult, error){
+  fmt.Println("Removing asset", public_id)
+
+  ctxBackground := context.Background()
+  ctxWithTimeout, _ := context.WithTimeout(ctxBackground, time.Duration(3)*time.Second)
+
+  cld, _ := cloudinary.NewFromParams(os.Getenv("CLOUDINARY_CLOUD_NAME"), os.Getenv("CLOUDINARY_API_KEY"), os.Getenv("CLOUDINARY_API_SECRET"))
+  return cld.Upload.Destroy(ctxWithTimeout, uploader.DestroyParams{
+    PublicID: public_id,
+    ResourceType: "image",
+    Invalidate: true,
+  })
 }

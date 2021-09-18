@@ -136,6 +136,20 @@ func UpdateUserById(m *User) (err error) {
 	return
 }
 
+func UpdateUserByUsername(m *User) (err error) {
+	o := orm.NewOrm()
+	v := User{Username: m.Username}
+	// ascertain id exists in the database
+	if err = o.Read(&v, "Username"); err == nil {
+		m.Id = v.Id
+		var num int64
+		if num, err = o.Update(m); err == nil {
+			fmt.Println("Number of records updated in database:", num)
+		}
+	}
+	return
+}
+
 // DeleteUser deletes User by Id and returns error if
 // the record to be deleted doesn't exist
 func DeleteUser(id int64) (err error) {

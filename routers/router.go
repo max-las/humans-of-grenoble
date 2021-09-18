@@ -10,17 +10,18 @@ func init() {
 
     beego.Router("/", &controllers.HomeController{})
 		beego.Router("/stories", &controllers.StoriesController{})
+		beego.Router("/story/:id", &controllers.StoryController{})
+		beego.Router("/auteure", &controllers.AuteureController{})
+		beego.Router("/projet", &controllers.ProjetController{})
+
 		beego.Router("/admin", &controllers.AdminHomeController{})
+		beego.Router("/admin/cloudinary", &controllers.CloudinaryController{})
 		beego.Router("/admin/login", &controllers.LoginController{})
-		beego.Router("/admin/logout", &controllers.LogoutController{})
 		beego.Router("/admin/new", &controllers.NewStoryController{})
 		beego.Router("/admin/edit/:id", &controllers.EditStoryController{})
-		beego.Router("/story/:id", &controllers.StoryController{})
+		beego.Router("/admin/new-password/", &controllers.NewPasswordController{})
 
-		runmode, _ := beego.AppConfig.String("runmode")
-		if(runmode == "dev"){
-			beego.Router("/adduser", &controllers.AdduserController{})
-		}
+		beego.Router("/adduser", &controllers.AdduserController{})
 
 		beego.ErrorController(&controllers.ErrorController{})
 }

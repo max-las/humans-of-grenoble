@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", function(){
 function initEdit(){
   resizedImage = null;
 
+  mode = document.querySelector("#storyForm").dataset.mode;
+
   fileChange(document.getElementById("imageFile"));
 
   $("#imageFile").on("change", function(){
@@ -36,7 +38,6 @@ function fileChange(fileInput){
 
   }else{
 
-    var mode = document.querySelector("#storyForm").dataset.mode;
     if(mode == "new"){
       clearFileInputStyle();
     }
@@ -44,7 +45,7 @@ function fileChange(fileInput){
   }
 }
 
-function upload(event) {
+function uploadStory(event) {
   var storyForm = document.getElementById("storyForm");
   if(!storyForm.checkValidity()){
     document.querySelector("#fakeSubmit").click();
@@ -54,38 +55,130 @@ function upload(event) {
     }else{
       $("#sendButton").addClass("is-hidden");
       $("#sendingButton").removeClass("is-hidden");
-      var data = new FormData(storyForm);
+
+      let localData = new FormData();
+      localData.set("text", document.querySelector("#text").value)
+
       if(resizedImage){
-        data.set("imageFile", resizedImage);
+
+        let cloudinaryData = new FormData();
+        cloudinaryData.set("folder", "humans-of-grenoble");
+        fetchCloudinarySign(cloudinaryData)
+        .then(function(res){
+          cloudinaryData.set("api_key", res.api_key)
+          cloudinaryData.set("timestamp", res.timestamp)
+          cloudinaryData.set("signature", res.signature)
+          cloudinaryData.set("file", resizedImage)
+
+          cloudinaryUpload(cloudinaryData)
+          .then(function(res){
+            localData.set("photoUrl", res.secure_url)
+            localData.set("photoPublicId", res.public_id)
+            setStory(localData)
+            .then(function(storyUrl){
+              window.location.href = storyUrl
+            })
+            .catch(function(error){
+              modAlert("failure", error)
+            })
+          })
+          .catch(function(error){
+            modAlert("failure", error);
+          });
+        })
+        .catch(function(error) {
+          modAlert("failure", error);
+        });
+
+      }else{
+
+        setStory(localData)
+        .then(function(storyUrl){
+          window.location.href = storyUrl
+        })
+        .catch(function(error){
+          modAlert("failure", error)
+        })
+
       }
-      var ajax = new XMLHttpRequest();
-      ajax.upload.addEventListener("progress", function(event) {
-        var percent = Math.round((event.loaded / event.total) * 100);
-        $("progress").val(percent);
-        $("progress").html(percent + "%");
-      }, false);
-      ajax.addEventListener("load", function(event) {
-        $("#sendButton").removeClass("is-hidden");
-        $("#sendingButton").addClass("is-hidden");
-        if(event.target.status == 200){
-          window.location.href = event.target.responseText;
-        }else{
-          modAlert("failure", "Le serveur a répondu par une erreur " + event.target.status + ".");
-        }
-      }, false);
-      ajax.addEventListener("error", function(event) {
-        $("#sendButton").removeClass("is-hidden");
-        $("#sendingButton").addClass("is-hidden");
-        modAlert("failure", "Le serveur est injoignable.");
-      }, false);
-      ajax.addEventListener("abort", function(event) {
-        modAlert("failure", "Requête annulée.");
-      }, false);
-      $("progress").removeClass("is-hidden");
-      ajax.open("POST", window.location);
-      ajax.send(data);
+
     }
   }
+}
+
+function cloudinaryUpload(data) {
+  return new Promise((resolve, reject) => {
+    var ajax = new XMLHttpRequest();
+    ajax.responseType = "json";
+    ajax.upload.addEventListener("progress", function(event) {
+      var percent = Math.round((event.loaded / event.total) * 100);
+      $("progress").val(percent);
+      $("progress").html(percent + "%");
+    }, false);
+    ajax.addEventListener("load", function(event) {
+      $("#sendButton").removeClass("is-hidden");
+      $("#sendingButton").addClass("is-hidden");
+      if(event.target.status == 200){
+        resolve(event.target.response);
+      }else{
+        reject("Le serveur a répondu par une erreur " + event.target.status + ".");
+      }
+    }, false);
+    ajax.addEventListener("error", function(event) {
+      $("#sendButton").removeClass("is-hidden");
+      $("#sendingButton").addClass("is-hidden");
+      reject("Le serveur est injoignable.");
+    }, false);
+    ajax.addEventListener("abort", function(event) {
+      reject("Requête annulée.");
+    }, false);
+    $("progress").removeClass("is-hidden");
+    ajax.open("POST", "https://api.cloudinary.com/v1_1/dehn7bofz/image/upload");
+    ajax.send(data);
+  });
+}
+
+function fetchCloudinarySign(data) {
+  return new Promise((resolve, reject) => {
+    var ajax = new XMLHttpRequest();
+    ajax.responseType = "json";
+    ajax.addEventListener("load", function(event) {
+      if(event.target.status == 200){
+        resolve(event.target.response);
+      }else{
+        reject("Le serveur a répondu par une erreur " + event.target.status + ".");
+      }
+    }, false);
+    ajax.addEventListener("error", function(event) {
+      reject("Le serveur est injoignable.");
+    }, false);
+    ajax.addEventListener("abort", function(event) {
+      reject("Requête annulée.");
+    }, false);
+    ajax.open("POST", "/admin/cloudinary");
+    ajax.send(data);
+  });
+}
+
+function setStory(data) {
+  return new Promise((resolve, reject) => {
+    var ajax = new XMLHttpRequest();
+    ajax.addEventListener("load", function(event) {
+      if(event.target.status == 200){
+        resolve(event.target.responseText);
+      }else{
+        reject("Le serveur a répondu par une erreur " + event.target.status + ".");
+      }
+    }, false);
+    ajax.addEventListener("error", function(event) {
+      reject("Le serveur est injoignable.");
+    }, false);
+    ajax.addEventListener("abort", function(event) {
+      reject("Requête annulée.");
+    }, false);
+    ajax.open("POST", window.location.href)
+    ajax.send(data);
+  });
 }
 
 function clearForm(){
@@ -166,6 +259,35 @@ function deleteStory(event){
   });
 }
 
+function updatePassword(event){
+  var newPassForm = document.querySelector("#newPassForm");
+  let data = new FormData(newPassForm);
+
+  let ajax = new XMLHttpRequest();
+  ajax.addEventListener("load", function(event) {
+    if(event.target.status == 200){
+      if(event.target.responseText.trim() == "OK"){
+        modAlert("success", "Mis à jour");
+      }else{
+        modAlert("failure", "Une erreur inattendue est survenue. Contactez l'administrateur.");
+      }
+    }else{
+      modAlert("failure", "Le serveur a répondu par une erreur " + event.target.status + ".");
+    }
+  }, false);
+
+  ajax.addEventListener("error", function(event) {
+    modAlert("failure", "Le serveur est injoignable.");
+  }, false);
+
+  ajax.addEventListener("abort", function(event) {
+    modAlert("failure", "Requête annulée.");
+  }, false);
+
+  ajax.open("POST", "/admin/new-password");
+  ajax.send(data);
+}
+
 function logout(){
   let ajax = new XMLHttpRequest();
   ajax.addEventListener("load", function(event) {
@@ -173,7 +295,7 @@ function logout(){
       if(event.target.responseText.trim() == "OK"){
         window.location.href = "/admin/login";
       }else{
-        modAlert("failure", event.target.responseText);
+        modAlert("failure", "Une erreur inattendue est survenue. Contactez l'administrateur.");
       }
     }else{
       modAlert("failure", "Le serveur a répondu par une erreur " + event.target.status + ".");

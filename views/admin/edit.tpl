@@ -50,7 +50,7 @@
 
       <div class="field">
         <div class="control">
-          <button type="button" id="sendButton" class="button is-outlined is-link" onclick="upload(event)">Envoyer</button>
+          <button type="button" id="sendButton" class="button is-outlined is-link" onclick="uploadStory(event)">Envoyer</button>
           <button type="button" id="sendingButton" class="button is-outlined is-hidden">
             <span class="icon">
               <i class="fas fa-circle-notch fa-spin"></i>

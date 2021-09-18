@@ -5,8 +5,6 @@ import (
 	"github.com/beego/beego/v2/client/orm"
 
 	"fmt"
-	"time"
-	"net/http"
 	"strconv"
 	"strings"
 
@@ -42,42 +40,27 @@ func (c *EditStoryController) Get() {
 
 func (c *EditStoryController) Post() {
 	text := c.GetString("text")
+	photoUrl := c.GetString("photoUrl")
+	photoPublicId := c.GetString("photoPublicId")
 	if(text == ""){
 		fmt.Println("Text missing")
 		c.Abort("400")
 	}
 
-	story := c.Data["Story"].(*models.Story)
+	keepPhoto := photoUrl == ""
 
-  _, header, err := c.GetFile("imageFile")
-	keepPhoto := err == http.ErrMissingFile
-	if(err != nil && !keepPhoto){
-		fmt.Println(err.Error())
-		c.Abort("500")
-	}
+	story := c.Data["Story"].(*models.Story)
 
 	if(!keepPhoto){
 
-		mimeType := header.Header["Content-Type"][0]
-		if(mimeType != "image/jpeg"){
-			fmt.Println("File not jpeg")
-			c.Abort("400")
-		}
-
-		savePath := "static/photos/" + time.Now().Format("02012006150405") + "-" + header.Filename
-		err := c.SaveToFile("imageFile", savePath);
-		if(err != nil){
-			fmt.Println(err.Error())
-			c.Abort("500")
-		}
-
-		story.PhotoUrl = "/" + savePath
+		story.PhotoUrl = photoUrl
+		story.PhotoPublicId = photoPublicId
 
 	}
 
 	story.Text = text
 
-	err = models.UpdateStoryById(story)
+	err := models.UpdateStoryById(story)
 	if(err != nil){
 		fmt.Println(err.Error())
 		c.Abort("500")
