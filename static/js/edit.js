@@ -76,6 +76,8 @@ function uploadStory(event) {
             localData.set("photoPublicId", res.public_id)
             setStory(localData)
             .then(function(storyUrl){
+              document.querySelector("#sendButton").classList.remove("is-hidden");
+              document.querySelector("#sendingButton").classList.add("is-hidden");
               if(mode == "new"){
                 clearForm();
                 notify("success", "Story publiée avec succès.")
@@ -86,14 +88,20 @@ function uploadStory(event) {
               }
             })
             .catch(function(error){
+              document.querySelector("#sendButton").classList.remove("is-hidden");
+              document.querySelector("#sendingButton").classList.add("is-hidden");
               notify("failure", error)
             })
           })
           .catch(function(error){
+            document.querySelector("#sendButton").classList.remove("is-hidden");
+            document.querySelector("#sendingButton").classList.add("is-hidden");
             notify("failure", error);
           });
         })
         .catch(function(error) {
+          document.querySelector("#sendButton").classList.remove("is-hidden");
+          document.querySelector("#sendingButton").classList.add("is-hidden");
           notify("failure", error);
         });
 
@@ -105,6 +113,8 @@ function uploadStory(event) {
           notify("success", "Story éditée avec succès.")
         })
         .catch(function(error){
+          document.querySelector("#sendButton").classList.remove("is-hidden");
+          document.querySelector("#sendingButton").classList.add("is-hidden");
           notify("failure", error)
         })
 
@@ -177,13 +187,7 @@ function setStory(data) {
     ajax.addEventListener("error", function(event) {
       reject("Le serveur est injoignable.");
     });
-    ajax.addEventListener("loadend", function(event) {
-      document.querySelector("#sendButton").classList.remove("is-hidden");
-      document.querySelector("#sendingButton").classList.add("is-hidden");
-    });
     ajax.addEventListener("abort", function(event) {
-      document.querySelector("#sendButton").classList.remove("is-hidden");
-      document.querySelector("#sendingButton").classList.add("is-hidden");
       reject("Requête annulée.");
     });
     ajax.open("POST", window.location.href)
