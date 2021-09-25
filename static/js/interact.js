@@ -62,8 +62,7 @@ function uploadStory(event) {
     if($("#storyForm .message.is-danger").not(".is-hidden").length > 0){
       animateCSS("#fileError", "headShake");
     }else{
-      $("#sendButton").addClass("is-hidden");
-      $("#sendingButton").removeClass("is-hidden");
+      setSubmitButton("sending");
 
       let localData = new FormData();
       localData.set("text", document.querySelector("#text").value)
@@ -85,8 +84,7 @@ function uploadStory(event) {
             localData.set("photoPublicId", res.public_id)
             setStory(localData)
             .then(function(storyUrl){
-              document.querySelector("#sendButton").classList.remove("is-hidden");
-              document.querySelector("#sendingButton").classList.add("is-hidden");
+              setSubmitButton("send");
               if(mode == "new"){
                 clearForm();
                 notify("success", "Story publiée avec succès.")
@@ -97,20 +95,17 @@ function uploadStory(event) {
               }
             })
             .catch(function(error){
-              document.querySelector("#sendButton").classList.remove("is-hidden");
-              document.querySelector("#sendingButton").classList.add("is-hidden");
+              setSubmitButton("send");
               notify("failure", error)
             })
           })
           .catch(function(error){
-            document.querySelector("#sendButton").classList.remove("is-hidden");
-            document.querySelector("#sendingButton").classList.add("is-hidden");
+            setSubmitButton("send");
             notify("failure", error);
           });
         })
         .catch(function(error) {
-          document.querySelector("#sendButton").classList.remove("is-hidden");
-          document.querySelector("#sendingButton").classList.add("is-hidden");
+          setSubmitButton("send");
           notify("failure", error);
         });
 
@@ -122,8 +117,7 @@ function uploadStory(event) {
           notify("success", "Story éditée avec succès.")
         })
         .catch(function(error){
-          document.querySelector("#sendButton").classList.remove("is-hidden");
-          document.querySelector("#sendingButton").classList.add("is-hidden");
+          setSubmitButton("send");
           notify("failure", error)
         })
 
@@ -301,8 +295,7 @@ function updatePassword(event){
     if(password != passwordConfirm){
       notify("failure", "Le mot de passe et sa confirmation sont différents.")
     }else{
-      document.querySelector("#sendButton").classList.add("is-hidden");
-      document.querySelector("#sendingButton").classList.remove("is-hidden");
+      setSubmitButton("sending");
 
       let ajax = new XMLHttpRequest();
       ajax.addEventListener("load", function(event) {
@@ -323,19 +316,28 @@ function updatePassword(event){
       });
 
       ajax.addEventListener("loadend", function(event) {
-        document.querySelector("#sendButton").classList.remove("is-hidden");
-        document.querySelector("#sendingButton").classList.add("is-hidden");
+        setSubmitButton("send");
       });
 
       ajax.addEventListener("abort", function(event) {
-        document.querySelector("#sendButton").classList.remove("is-hidden");
-        document.querySelector("#sendingButton").classList.add("is-hidden");
+        setSubmitButton("send");
         notify("failure", "Requête annulée.");
       });
 
       ajax.open("POST", "/admin/new-password");
       ajax.send(data);
     }
+  }
+}
+
+function setSubmitButton(status){
+  if(status == "send"){
+    document.querySelector("#sendButton").classList.remove("is-hidden");
+    document.querySelector("#sendingButton").classList.add("is-hidden");
+  }
+  if(status == "sending"){
+    document.querySelector("#sendButton").classList.add("is-hidden");
+    document.querySelector("#sendingButton").classList.remove("is-hidden");
   }
 }
 
@@ -394,4 +396,45 @@ function notify(status, message){
   document.querySelector(".notify").appendChild(notif);
 
   animateCSS(notif, "slideInUp");
+}
+
+function sendMail(event){
+  let contactForm = document.getElementById("contactForm");
+  if(!contactForm.checkValidity()){
+    document.querySelector("#fakeSubmit").click();
+  }else{
+    setSubmitButton("sending");
+
+    let data = new FormData(contactForm);
+
+    let ajax = new XMLHttpRequest();
+    ajax.addEventListener("load", function(event) {
+      if(event.target.status == 200){
+        if(event.target.responseText.trim() == "OK"){
+          contactForm.reset();
+          setSubmitButton("send");
+          notify("success", "Votre message a bien été envoyé. Merci !");
+        }else{
+          setSubmitButton("send");
+          notify("failure", "Une erreur inattendue est survenue. Contactez l'administrateur.");
+        }
+      }else{
+        setSubmitButton("send");
+        notify("failure", "Le serveur a répondu par une erreur " + event.target.status + ".");
+      }
+    });
+
+    ajax.addEventListener("error", function(event) {
+      setSubmitButton("send");
+      notify("failure", "Le serveur est injoignable.");
+    });
+
+    ajax.addEventListener("abort", function(event) {
+      setSubmitButton("send");
+      notify("failure", "Requête annulée.");
+    });
+
+    ajax.open("POST", "/contact");
+    ajax.send(data);
+  }
 }

@@ -10,6 +10,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cash/8.1.0/cash.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
   <script src="https://unpkg.com/@barba/core"></script>
-  <script src="/static/js/common.js"></script>
-  <script src="/static/js/edit.js"></script>
+  <script src="/static/js/global.js"></script>
+  <script src="/static/js/interact.js"></script>
 </head>
