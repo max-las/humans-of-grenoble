@@ -4,10 +4,20 @@ import (
 	beego "github.com/beego/beego/v2/server/web"
   "net/smtp"
   "fmt"
+  "os"
+  "html/template"
+  "github.com/domodwyer/mailyak"
 )
 
 type ContactController struct {
 	beego.Controller
+}
+
+type ContactData struct {
+	Name string
+	Email string
+  Subject string
+  Message string
 }
 
 func (c *ContactController) Get() {
@@ -19,29 +29,33 @@ func (c *ContactController) Get() {
 func (c *ContactController) Post() {
   c.TplName = "dev/simpleMessage.tpl"
 
-  name := c.GetString("name")
-  email := c.GetString("email")
-  subject := c.GetString("subject")
-  message := c.GetString("message")
-  if(name == "" || email == "" || subject == "" || message == ""){
+  data := ContactData{
+    Name: c.GetString("name"),
+  	Email: c.GetString("email"),
+    Subject: c.GetString("subject"),
+    Message: c.GetString("message"),
+  }
+
+  if(data.Name == "" || data.Email == "" || data.Subject == "" || data.Message == ""){
     c.Abort("400")
   }
 
-  username := ""
-  password := ""
-  smtpHost := ""
-  smtpPort := ""
+  username := os.Getenv("SMTP_USERNAME")
+  password := os.Getenv("SMTP_PASSWORD")
+  smtpHost := os.Getenv("SMTP_HOST")
+  smtpPort := os.Getenv("SMTP_PORT")
+  recipient := os.Getenv("CONTACT_RECIPIENT")
 
-  from := ""
-  to := []string{
-    "",
-  }
+  mail := mailyak.New(smtpHost+":"+smtpPort, smtp.PlainAuth("", username, password, smtpHost))
+  mail.To(recipient)
+  mail.From(username)
+  mail.FromName("HumansOfGrenoble")
+  mail.Subject(data.Subject)
 
-  actualMessage := []byte(message)
+  t := template.Must(template.ParseFiles("views/mail/contact.tpl"))
+  t.Execute(mail.HTML(), data)
 
-  auth := smtp.PlainAuth("", username, password, smtpHost)
-
-  err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, actualMessage)
+  err := mail.Send()
   if err != nil {
     fmt.Println(err)
     c.Abort("500")

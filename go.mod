@@ -8,14 +8,13 @@ require (
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/cloudinary/cloudinary-go v1.3.0
 	github.com/creasty/defaults v1.5.2 // indirect
+	github.com/domodwyer/mailyak v3.1.1+incompatible
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/lib/pq v1.10.3
 	github.com/mitchellh/mapstructure v1.4.2 // indirect
 	github.com/prometheus/common v0.30.0 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
-	github.com/sendgrid/rest v2.6.5+incompatible // indirect
-	github.com/sendgrid/sendgrid-go v3.10.1+incompatible
 	github.com/shiena/ansicolor v0.0.0-20200904210342-c7312218db18 // indirect
 	github.com/smartystreets/goconvey v1.6.4
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
