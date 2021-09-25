@@ -438,3 +438,10 @@ function sendMail(event){
     ajax.send(data);
   }
 }
+
+function preventEnterKey(event){
+  if(event.keyCode == 13 && document.activeElement.tagName != "TEXTAREA"){
+    event.preventDefault();
+    document.querySelector("#sendButton").click();
+  }
+}

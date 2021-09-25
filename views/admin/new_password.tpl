@@ -2,7 +2,7 @@
   <div class="container">
     <h1 class="title">Changement de mot de passe</h1>
 
-    <form id="newPassForm" action="" method="post" enctype="multipart/form-data">
+    <form id="newPassForm" onkeydown="preventEnterKey(event);" action="" method="post" enctype="multipart/form-data">
 
       <div class="field">
         <label class="label">Nouveau mot de passe</label>

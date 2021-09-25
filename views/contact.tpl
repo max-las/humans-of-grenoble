@@ -2,7 +2,7 @@
   <div class="container">
     <h1 class="title">Contact</h1>
 
-    <form id="contactForm" action="" method="post">
+    <form id="contactForm" onkeydown="preventEnterKey(event);" action="" method="post">
 
       <div class="field">
         <label class="label">Nom</label>

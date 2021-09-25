@@ -2,7 +2,7 @@
   <div class="container">
     <h1 class="title">Nouvelle Story</h1>
 
-    <form id="storyForm" data-mode="new" action="" method="post" enctype="multipart/form-data">
+    <form id="storyForm" onkeydown="preventEnterKey(event);" data-mode="new" action="" method="post" enctype="multipart/form-data">
 
       <div class="field" id="imageField">
         <div class="control">
