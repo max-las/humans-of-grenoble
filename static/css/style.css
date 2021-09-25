@@ -36,7 +36,7 @@ html.is-animating .transition-fade {
 }
 
 .home.background {
-  background-image: url("/static/img/grenoble.jpg");
+  background-image: url("/static/img/subway-bar.jpg");
   background-size: cover;
   z-index: 90;
 }
