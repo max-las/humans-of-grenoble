@@ -20,6 +20,9 @@
         <div class="level-item has-text-centered">
           <a class="title" href="/auteure">Auteure</a>
         </div>
+        <div class="level-item has-text-centered">
+          <a class="title" href="/contact">Contact</a>
+        </div>
       </nav>
     </div class="block">
   </div>
