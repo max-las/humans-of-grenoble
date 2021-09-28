@@ -24,10 +24,6 @@
         <span>Projet</span>
       </a>
 
-      <a class="navbar-item" href="/auteure">
-        <span>Auteure</span>
-      </a>
-
       <a class="navbar-item" href="/contact">
         <span>Contact</span>
       </a>

@@ -36,8 +36,9 @@ html.is-animating .transition-fade {
 }
 
 .home.background {
-  background-image: url("/static/img/subway-bar.jpg");
+  background-image: url("/static/img/grenoble-street.jpg");
   background-size: cover;
+  background-position: bottom;
   z-index: 90;
 }
 
@@ -59,6 +60,7 @@ html.is-animating .transition-fade {
 
 .home .level-item a:hover {
   border-bottom: 5px solid hsl(229, 53%, 53%);
+  margin-bottom: -5px;
 }
 
 .home-title {
