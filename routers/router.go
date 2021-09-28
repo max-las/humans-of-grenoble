@@ -13,6 +13,7 @@ func init() {
 		beego.Router("/story/:id", &controllers.StoryController{})
 		beego.Router("/projet", &controllers.ProjetController{})
 		beego.Router("/contact", &controllers.ContactController{})
+		beego.Router("/legal", &controllers.LegalController{})
 
 		beego.Router("/admin", &controllers.AdminHomeController{})
 		beego.Router("/admin/cloudinary", &controllers.CloudinaryController{})

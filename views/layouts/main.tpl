@@ -12,7 +12,11 @@
 
       <div class="barba-content">
 
-        {{.LayoutContent}}
+        <div class="minHeightContent">
+
+          {{.LayoutContent}}
+
+        </div>
 
       </div>
 

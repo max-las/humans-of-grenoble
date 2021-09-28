@@ -1,3 +1,5 @@
+contentMinHeight = null;
+
 document.addEventListener("DOMContentLoaded", function(){
   barba.init({
     transitions: [{
@@ -42,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function(){
       beforeEnter(data) {
         if(data.next.container.querySelector("#mainNavbar") !== null){
           initNavAndModals();
+          fixFooter(data.next.container);
         }
         if(data.next.container.querySelector("#storyForm") !== null){
           initEdit();
@@ -50,7 +53,9 @@ document.addEventListener("DOMContentLoaded", function(){
     }]
   });
 
-  initNavAndModals();
+  window.addEventListener("resize", function(){
+    fixFooter(document);
+  });
 });
 
 function initNavAndModals(){
@@ -107,4 +112,11 @@ function modalConfirm(title, content, confirmText, callback){
   confirmButton.one("click.tmp", callback);
 
   $("#confirmModal").addClass("is-active");
+}
+
+function fixFooter(container){
+  let mainNavHeight = container.querySelector("#mainNav").offsetHeight;
+  let footerHeight = container.querySelector(".footer").offsetHeight;
+  let contentMinHeight = window.innerHeight - mainNavHeight - footerHeight;
+  container.querySelector(".minHeightContent").style.minHeight = contentMinHeight.toString() + "px";
 }

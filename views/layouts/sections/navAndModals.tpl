@@ -1,4 +1,4 @@
-<nav class="navbar" role="navigation" aria-label="main navigation">
+<nav class="navbar" id="mainNav" role="navigation" aria-label="main navigation">
 
   <div class="navbar-brand is-family-playfair-display">
     <a class="navbar-item" href="/">
@@ -32,19 +32,19 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a class="button is-white">
-            <span class="icon">
-              <i class="fab fa-twitter"></i>
-            </span>
-          </a>
-          <a class="button is-white">
+          <a target="_blank" class="button is-white" href="https://www.instagram.com/humansofgrenoble/">
             <span class="icon">
               <i class="fab fa-instagram"></i>
             </span>
           </a>
-          <a class="button is-white">
+          <a target="_blank" class="button is-white" href="https://www.facebook.com/humansofgrenoble">
             <span class="icon">
-              <i class="fab fa-pinterest"></i>
+              <i class="fab fa-facebook"></i>
+            </span>
+          </a>
+          <a target="_blank" class="button is-white" href="https://twitter.com/humansofgrenobl">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
             </span>
           </a>
         </div>

@@ -2,6 +2,7 @@
 <div class="home over-bg animate__animated animate__fadeIn">
   <div class="just-white has-background-white">
   </div>
+
   <div class="is-flex is-align-items-center is-justify-content-center has-text-centered">
     <div class="block">
       <div class="is-family-playfair-display home-title">
