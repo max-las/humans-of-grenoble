@@ -78,8 +78,16 @@ func main() {
 		}
 	}
 
+	var FilterHttps = func(ctx *context.Context) {
+		if(ctx.Input.Scheme() == "http" && beego.BConfig.RunMode == "prod"){
+			url := ctx.Input.Site() + ctx.Input.URI()
+			ctx.Redirect(301, "https://" + strings.TrimPrefix(url, "http://"))
+		}
+	}
+
 	beego.InsertFilter("/static/private/*", beego.BeforeStatic, FilterStatic)
 	beego.InsertFilter("/admin/*", beego.BeforeRouter, FilterAuth)
+	beego.InsertFilter("/*", beego.BeforeStatic, FilterHttps)
 
 	beego.Run()
 }
