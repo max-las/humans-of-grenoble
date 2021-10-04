@@ -1,4 +1,4 @@
-#Humans of Grenoble
+# Humans of Grenoble
 Website made to publish and display photos with stories taken from the streets of Grenoble, France.
 
 Online at [www.humansofgrenoble.com](https://www.humansofgrenoble.com) - (content is **not** managed by me)
