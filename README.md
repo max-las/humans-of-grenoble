@@ -1,4 +1,4 @@
-Website made to publish and display photos with stories from the streets of Grenoble, France.
+Website made to publish and display photos with stories taken from the streets of Grenoble, France.
 
 Online at [www.humansofgrenoble.com](https://www.humansofgrenoble.com)
 
