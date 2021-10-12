@@ -1,5 +1,6 @@
 module github.com/max-las/humans-of-grenoble
 
+// +heroku goVersion go1.16
 go 1.16
 
 require github.com/beego/beego/v2 v2.0.1
