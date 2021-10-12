@@ -9,6 +9,9 @@ import (
 	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/server/web/context"
 
+	"github.com/tdewolff/minify/v2"
+	"github.com/tdewolff/minify/v2/css"
+
 	"strings"
 	"strconv"
 	"os"
@@ -78,16 +81,26 @@ func main() {
 		}
 	}
 
-	// var FilterHttps = func(ctx *context.Context) {
-	// 	if(ctx.Input.Scheme() == "http" && beego.BConfig.RunMode == "prod"){
-	// 		url := ctx.Input.Site() + ctx.Input.URI()
-	// 		ctx.Redirect(301, "https://" + strings.TrimPrefix(url, "http://"))
-	// 	}
-	// }
-
 	beego.InsertFilter("/static/private/*", beego.BeforeStatic, FilterStatic)
 	beego.InsertFilter("/admin/*", beego.BeforeRouter, FilterAuth)
-	// beego.InsertFilter("/*", beego.BeforeStatic, FilterHttps)
+
+	fileReader, err := os.Open("static/css/style.css")
+	if err != nil {
+		fmt.Println(err)
+	}else{
+		fileWriter, err := os.Create("static/css/style_minified.css")
+		if err != nil {
+			fmt.Println(err)
+		}else{
+			m := minify.New()
+			m.AddFunc("text/css", css.Minify)
+			err = m.Minify("text/css", fileWriter, fileReader)
+			if err != nil {
+				fmt.Println(err)
+			}
+		}
+	}
+
 
 	beego.Run()
 }
