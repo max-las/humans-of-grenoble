@@ -8,11 +8,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <link rel="stylesheet" href="/static/css/bulma-custom.css">
   <link rel="stylesheet" href="/static/css/fa-all.min.css">
-  <link rel="stylesheet" href="/static/css/style_minified.css">
+  <link rel="stylesheet" href="/static/css/style.min.css">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cash/8.1.0/cash.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
   <script src="https://unpkg.com/@barba/core"></script>
-  <script src="/static/js/global.js"></script>
-  <script src="/static/js/interact.js"></script>
+  <script src="/static/js/global.min.js"></script>
+  <script src="/static/js/interact.min.js"></script>
 </head>

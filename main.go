@@ -1,28 +1,29 @@
 package main
 
 import (
-	_ "github.com/max-las/humans-of-grenoble/routers"
-	_ "github.com/lib/pq"
 	_ "github.com/beego/beego/v2/server/web/session/postgres"
+	_ "github.com/lib/pq"
+	_ "github.com/max-las/humans-of-grenoble/routers"
 
-	beego "github.com/beego/beego/v2/server/web"
 	"github.com/beego/beego/v2/client/orm"
+	beego "github.com/beego/beego/v2/server/web"
 	"github.com/beego/beego/v2/server/web/context"
 
 	"github.com/tdewolff/minify/v2"
 	"github.com/tdewolff/minify/v2/css"
+	"github.com/tdewolff/minify/v2/js"
 
-	"strings"
-	"strconv"
-	"os"
 	"fmt"
+	"os"
+	"strconv"
+	"strings"
 )
 
 func init() {
 	var err error
 
 	beego.BConfig.Listen.HTTPPort, err = strconv.Atoi(os.Getenv("PORT"))
-	if(err != nil){
+	if err != nil {
 		beego.BConfig.Listen.HTTPPort = 8080
 	}
 
@@ -34,8 +35,6 @@ func init() {
 func main() {
 	beego.BConfig.WebConfig.Session.SessionOn = true
 	beego.BConfig.WebConfig.Session.SessionName = "sessionID"
-	// beego.BConfig.WebConfig.Session.SessionProvider = "file"
-	// beego.BConfig.WebConfig.Session.SessionProviderConfig = "./tmp"
 	beego.BConfig.WebConfig.Session.SessionProvider = "postgresql"
 	beego.BConfig.WebConfig.Session.SessionProviderConfig = os.Getenv("DATABASE_URL")
 	beego.BConfig.WebConfig.Session.SessionGCMaxLifetime = 5256000
@@ -48,34 +47,34 @@ func main() {
 	o := orm.NewOrm()
 	var to_regclass string
 	err := o.Raw("SELECT to_regclass('session');").QueryRow(&to_regclass)
-	if(err != nil){
-		fmt.Println(err);
-	}else{
-		if(to_regclass == ""){
-			fmt.Println("Table 'session' does not exist, creating");
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		if to_regclass == "" {
+			fmt.Println("Table 'session' does not exist, creating")
 			_, err := o.Raw("CREATE TABLE session ( session_key char(64) NOT NULL, session_data bytea, session_expiry timestamp NOT NULL, CONSTRAINT session_key PRIMARY KEY(session_key) );").Exec()
-			if(err != nil){
-				fmt.Println(err);
+			if err != nil {
+				fmt.Println(err)
 			}
-		}else{
-			fmt.Println("Table 'session' already exists");
+		} else {
+			fmt.Println("Table 'session' already exists")
 		}
 	}
 
 	var FilterStatic = func(ctx *context.Context) {
 		sess, _ := beego.GlobalSessions.SessionStart(ctx.ResponseWriter, ctx.Request)
-    defer sess.SessionRelease(nil, ctx.ResponseWriter)
+		defer sess.SessionRelease(nil, ctx.ResponseWriter)
 		username := sess.Get(nil, "username")
-		if(username == nil){
+		if username == nil {
 			ctx.Abort(404, "404")
 		}
 	}
 
 	var FilterAuth = func(ctx *context.Context) {
 		url := strings.TrimSuffix(ctx.Input.URL(), "/")
-		if(url != "/admin/login" && url != "/admin"){
+		if url != "/admin/login" && url != "/admin" {
 			username := ctx.Input.Session("username")
-			if(username == nil){
+			if username == nil {
 				ctx.Abort(404, "404")
 			}
 		}
@@ -84,16 +83,18 @@ func main() {
 	beego.InsertFilter("/static/private/*", beego.BeforeStatic, FilterStatic)
 	beego.InsertFilter("/admin/*", beego.BeforeRouter, FilterAuth)
 
+	m := minify.New()
+	m.AddFunc("text/css", css.Minify)
+	m.AddFunc("application/javascript", js.Minify)
+
 	fileReader, err := os.Open("static/css/style.css")
 	if err != nil {
 		fmt.Println(err)
-	}else{
-		fileWriter, err := os.Create("static/css/style_minified.css")
+	} else {
+		fileWriter, err := os.Create("static/css/style.min.css")
 		if err != nil {
 			fmt.Println(err)
-		}else{
-			m := minify.New()
-			m.AddFunc("text/css", css.Minify)
+		} else {
 			err = m.Minify("text/css", fileWriter, fileReader)
 			if err != nil {
 				fmt.Println(err)
@@ -101,6 +102,35 @@ func main() {
 		}
 	}
 
+	fileReader, err = os.Open("static/js/global.js")
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fileWriter, err := os.Create("static/js/global.min.js")
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			err = m.Minify("application/javascript", fileWriter, fileReader)
+			if err != nil {
+				fmt.Println(err)
+			}
+		}
+	}
+
+	fileReader, err = os.Open("static/js/interact.js")
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fileWriter, err := os.Create("static/js/interact.min.js")
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			err = m.Minify("application/javascript", fileWriter, fileReader)
+			if err != nil {
+				fmt.Println(err)
+			}
+		}
+	}
 
 	beego.Run()
 }
