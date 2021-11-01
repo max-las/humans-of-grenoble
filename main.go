@@ -61,10 +61,12 @@ func main() {
 		}
 	}
 
+	beego.SetStaticPath("/static", "static")
+
 	var FilterStatic = func(ctx *context.Context) {
 		sess, _ := beego.GlobalSessions.SessionStart(ctx.ResponseWriter, ctx.Request)
-		defer sess.SessionRelease(nil, ctx.ResponseWriter)
-		username := sess.Get(nil, "username")
+		defer sess.SessionRelease(ctx.Request.Context(), ctx.ResponseWriter)
+		username := sess.Get(ctx.Request.Context(), "username")
 		if username == nil {
 			ctx.Abort(404, "404")
 		}
