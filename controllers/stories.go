@@ -23,7 +23,7 @@ func (c *StoriesController) Get() {
 
 	var columns [nbColumns][]models.Story
 
-	stories, err := models.GetAllStory(nil, nil, nil, nil, 0, 100)
+	stories, err := models.GetAllStory(nil, nil, []string{"id"}, []string{"desc"}, 0, 100)
 	if(err != nil){
 		if(err != orm.ErrNoRows){
 			fmt.Println(err.Error())
