@@ -14,6 +14,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cash/8.1.0/cash.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
   <script src="https://unpkg.com/@barba/core"></script>
-  <script src="/static/js/global.min.js"></script>
-  <script src="/static/js/interact.min.js"></script>
+  <script src="/static/js/global.min.js?v=0502222131"></script>
+  <script src="/static/js/interact.min.js?v=0502222131"></script>
 </head>

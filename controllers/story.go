@@ -6,6 +6,7 @@ import (
 	"github.com/max-las/humans-of-grenoble/helpers"
 	"github.com/beego/beego/v2/client/orm"
 	"strconv"
+	"fmt"
 )
 
 type StoryController struct {
@@ -15,6 +16,8 @@ type StoryController struct {
 func (c *StoryController) Get() {
 	c.Layout = "layouts/main.tpl"
   c.TplName = "story.tpl"
+
+	etag := helpers.TplLastModifiedString(c.TplName)
 
   id, err := strconv.ParseInt(c.Ctx.Input.Param(":id"), 10, 64)
 	if(err != nil){
@@ -33,4 +36,6 @@ func (c *StoryController) Get() {
 	c.Data["PageTitle"] = helpers.FirstWords(story.Text, 3) + " | Humans of Grenoble"
 	c.Data["PhotoUrl"] = story.PhotoUrl
 	c.Data["Text"] = story.Text
+
+	c.Ctx.Output.Header("ETag", fmt.Sprintf("\"%s.%d\"", etag, helpers.StructToCrc32(story)))
 }

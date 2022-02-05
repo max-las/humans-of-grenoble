@@ -7,6 +7,7 @@ import (
   "os"
   "html/template"
   "github.com/domodwyer/mailyak"
+  "github.com/max-las/humans-of-grenoble/helpers"
 )
 
 type ContactController struct {
@@ -24,6 +25,9 @@ func (c *ContactController) Get() {
 	c.Data["PageTitle"] = "Contact | Humans of Grenoble"
 	c.Layout = "layouts/main.tpl"
 	c.TplName = "contact.tpl"
+
+  etag := helpers.TplLastModifiedString(c.TplName)
+	c.Ctx.Output.Header("ETag", fmt.Sprintf("\"%s\"", etag))
 }
 
 func (c *ContactController) Post() {

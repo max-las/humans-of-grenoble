@@ -21,6 +21,12 @@ func init() {
 	orm.RegisterModel(new(Story))
 }
 
+func CountStory() (cnt int64, err error) {
+	o := orm.NewOrm()
+	cnt, err = o.QueryTable("story").Count()
+	return
+}
+
 // AddStory insert a new Story into database and returns
 // last inserted Id on success.
 func AddStory(m *Story) (id int64, err error) {

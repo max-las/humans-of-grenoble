@@ -1,13 +1,13 @@
 package helpers
 
 import (
-
   "golang.org/x/crypto/bcrypt"
   "strings"
   "os"
   "context"
   "time"
   "fmt"
+  "hash/crc32"
 
   "github.com/cloudinary/cloudinary-go"
   "github.com/cloudinary/cloudinary-go/api/uploader"
@@ -58,4 +58,26 @@ func MinInt(a, b int) int {
   }else{
     return b
   }
+}
+
+func StructsToCrc32(structs []interface{}) uint32 {
+  var data []byte
+  for i := 0; i < len(structs); i++ {
+    data = append(data, []byte(fmt.Sprintf("%v", structs[i]))...)
+  }
+  return crc32.ChecksumIEEE(data)
+}
+
+func StructToCrc32(strct interface{}) uint32 {
+  return crc32.ChecksumIEEE([]byte(fmt.Sprintf("%v", strct)))
+}
+
+func TplLastModifiedString(tpl string) string {
+  file, err := os.Stat("views/" + tpl)
+  if(err != nil){
+    fmt.Println(err.Error())
+    return "0"
+  }
+
+  return fmt.Sprintf("%d", file.ModTime().Unix())
 }

@@ -114,6 +114,7 @@ function uploadStory(event) {
         setStory(localData)
         .then(function(storyUrl){
           clearProgress();
+          setSubmitButton("send");
           notify("success", "Story éditée avec succès.")
         })
         .catch(function(error){

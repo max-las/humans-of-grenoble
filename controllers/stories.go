@@ -3,7 +3,7 @@ package controllers
 import (
 	beego "github.com/beego/beego/v2/server/web"
 	"github.com/beego/beego/v2/client/orm"
-	"github.com/beego/beego/v2/core/utils/pagination"
+	"github.com/beego/beego/v2/server/web/pagination"
 	"github.com/max-las/humans-of-grenoble/models"
 	"github.com/max-las/humans-of-grenoble/helpers"
 	"fmt"
@@ -18,33 +18,42 @@ func (c *StoriesController) Get() {
 	c.Layout = "layouts/main.tpl"
 	c.TplName = "stories.tpl"
 
+	etag := helpers.TplLastModifiedString(c.TplName)
+
 	const nbColumns = 4
 	const storiesPerPage = 8
 
 	var columns [nbColumns][]models.Story
 
-	stories, err := models.GetAllStory(nil, nil, []string{"id"}, []string{"desc"}, 0, 100)
+	cnt, err := models.CountStory()
 	if(err != nil){
-		if(err != orm.ErrNoRows){
-			fmt.Println(err.Error())
-			c.Abort("500")
-		}else{
-			c.Data["NoStory"] = true
-		}
+		fmt.Println(err.Error())
+		c.Abort("500")
 	}
 
-	if(len(stories) == 0){
+	if(cnt == 0){
 
 		c.Data["NoStory"] = true
 
+		etag = fmt.Sprintf("%s.%d", etag, 0)
+
 	}else{
 
-		paginator := pagination.NewPaginator(c.Ctx.Request, storiesPerPage, len(stories))
-		c.Data["paginator"] = paginator
+		paginator := pagination.SetPaginator(c.Ctx, storiesPerPage, int64(cnt))
+
+		stories, err := models.GetAllStory(nil, nil, []string{"id"}, []string{"desc"}, int64(paginator.Offset()), storiesPerPage)
+		if(err != nil){
+			if(err != orm.ErrNoRows){
+				fmt.Println(err.Error())
+				c.Abort("500")
+			}
+		}
+
+		etag = fmt.Sprintf("%s.%d", etag, helpers.StructsToCrc32(stories))
 
 		for i := 0; i < nbColumns; i++ {
-			for j := i; j < helpers.MinInt(storiesPerPage, len(stories)-paginator.Offset()); j = j + nbColumns {
-				columns[i] = append(columns[i], stories[helpers.MinInt(len(stories)-1, paginator.Offset()+j)].(models.Story))
+			for j := i; j < helpers.MinInt(storiesPerPage, int(cnt)-paginator.Offset()); j = j + nbColumns {
+				columns[i] = append(columns[i], stories[helpers.MinInt(int(cnt)-1, paginator.Offset()+j)].(models.Story))
 			}
 		}
 
@@ -52,4 +61,5 @@ func (c *StoriesController) Get() {
 
 	}
 
+	c.Ctx.Output.Header("ETag", fmt.Sprintf("\"%s\"", etag))
 }
