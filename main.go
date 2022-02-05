@@ -35,8 +35,6 @@ func init() {
 func main() {
 	beego.BConfig.WebConfig.Session.SessionOn = true
 	beego.BConfig.WebConfig.Session.SessionName = "sessionID"
-	beego.BConfig.WebConfig.Session.SessionProvider = "postgresql"
-	beego.BConfig.WebConfig.Session.SessionProviderConfig = os.Getenv("DATABASE_URL")
 	beego.BConfig.WebConfig.Session.SessionGCMaxLifetime = 5256000
 	beego.BConfig.WebConfig.Session.SessionCookieLifeTime = 5256000
 
@@ -63,6 +61,12 @@ func main() {
 
 	beego.SetStaticPath("/static", "static")
 
+	var FilterFixSession = func(ctx *context.Context) {
+		sess, _ := beego.GlobalSessions.SessionStart(ctx.ResponseWriter, ctx.Request)
+		defer sess.SessionRelease(ctx.Request.Context(), ctx.ResponseWriter)
+		ctx.Input.CruSession = sess
+	}
+
 	var FilterStatic = func(ctx *context.Context) {
 		sess, _ := beego.GlobalSessions.SessionStart(ctx.ResponseWriter, ctx.Request)
 		defer sess.SessionRelease(ctx.Request.Context(), ctx.ResponseWriter)
@@ -83,6 +87,7 @@ func main() {
 	}
 
 	beego.InsertFilter("/static/private/*", beego.BeforeStatic, FilterStatic)
+	beego.InsertFilter("/*", beego.BeforeRouter, FilterFixSession)
 	beego.InsertFilter("/admin/*", beego.BeforeRouter, FilterAuth)
 
 	m := minify.New()

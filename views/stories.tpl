@@ -26,4 +26,18 @@
       {{end}}
     </div>
 
+    <nav class="pagination" role="navigation" aria-label="pagination">
+      <ul class="pagination-list">
+        {{range $index, $page := .paginator.Pages}}
+            {{$addClass := ""}}
+            {{if $.paginator.IsActive .}}
+              {{$addClass = " is-current"}}
+            {{end}}
+
+            <li>
+              <a class="pagination-link{{$addClass}}" href="{{$.paginator.PageLink $page}}">{{$page}}</a>
+            </li>
+        {{end}}
+      </ul>
+    </nav>
 </section>
