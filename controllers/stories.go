@@ -52,8 +52,8 @@ func (c *StoriesController) Get() {
 		etag = fmt.Sprintf("%s.%d", etag, helpers.StructsToCrc32(stories))
 
 		for i := 0; i < nbColumns; i++ {
-			for j := i; j < helpers.MinInt(storiesPerPage, int(cnt)-paginator.Offset()); j = j + nbColumns {
-				columns[i] = append(columns[i], stories[helpers.MinInt(int(cnt)-1, paginator.Offset()+j)].(models.Story))
+			for j := i; j < len(stories); j = j + nbColumns {
+				columns[i] = append(columns[i], stories[j].(models.Story))
 			}
 		}
 
