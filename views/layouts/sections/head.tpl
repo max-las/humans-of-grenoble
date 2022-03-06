@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <link rel="stylesheet" href="/static/css/bulma-custom.css">
   <link rel="stylesheet" href="/static/css/fa-all.min.css">
-  <link rel="stylesheet" href="/static/css/style.min.css">
+  <link rel="stylesheet" href="/static/css/style.min.css?v=0603221453">
 
   <script src="https://www.google.com/recaptcha/api.js?render=6LeSGroeAAAAAAbqnDMMmYNVeAlWX_W4H-Eaobwj"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cash/8.1.0/cash.min.js"></script>
