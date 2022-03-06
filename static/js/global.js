@@ -2,6 +2,7 @@ contentMinHeight = null;
 
 document.addEventListener("DOMContentLoaded", function(){
   barba.init({
+    timeout: 10000,
     transitions: [{
       name: 'main-main',
       to: {

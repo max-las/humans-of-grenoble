@@ -2,7 +2,6 @@ package controllers
 
 import (
 	beego "github.com/beego/beego/v2/server/web"
-	"fmt"
 	"github.com/max-las/humans-of-grenoble/helpers"
 )
 
@@ -16,5 +15,5 @@ func (c *ProjetController) Get() {
 	c.TplName = "projet.tpl"
 
 	etag := helpers.TplLastModifiedString(c.TplName)
-	c.Ctx.Output.Header("ETag", fmt.Sprintf("\"%s\"", etag))
+	helpers.HandleEtag(&c.Controller, etag)
 }

@@ -8,6 +8,10 @@
   font-family: 'Lora', serif;
 }
 
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
 .ellipsised {
   display: -webkit-box;
   -webkit-line-clamp: 3;

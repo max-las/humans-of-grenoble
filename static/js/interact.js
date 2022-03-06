@@ -399,7 +399,7 @@ function notify(status, message){
   animateCSS(notif, "slideInUp");
 }
 
-function sendMail(event){
+function sendMail(token){
   let contactForm = document.getElementById("contactForm");
   if(!contactForm.checkValidity()){
     document.querySelector("#fakeSubmit").click();
@@ -407,6 +407,7 @@ function sendMail(event){
     setSubmitButton("sending");
 
     let data = new FormData(contactForm);
+    data.append("g-recaptcha-response", token);
 
     let ajax = new XMLHttpRequest();
     ajax.addEventListener("load", function(event) {
@@ -445,4 +446,10 @@ function preventEnterKey(event){
     event.preventDefault();
     document.querySelector("#sendButton").click();
   }
+}
+
+function recaptchaHandler(action, callback){
+  grecaptcha.ready(function() {
+    grecaptcha.execute("6LeSGroeAAAAAAbqnDMMmYNVeAlWX_W4H-Eaobwj", {action: action}).then(callback);
+  });
 }

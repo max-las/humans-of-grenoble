@@ -61,5 +61,5 @@ func (c *StoriesController) Get() {
 
 	}
 
-	c.Ctx.Output.Header("ETag", fmt.Sprintf("\"%s\"", etag))
+	helpers.HandleEtag(&c.Controller, etag)
 }

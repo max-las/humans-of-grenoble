@@ -1,3 +1,8 @@
+<style>
+  .grecaptcha-badge {
+    visibility: visible;
+  }
+</style>
 <section class="section">
   <div class="container">
     <h1 class="title">Contact</h1>
@@ -34,7 +39,10 @@
 
       <div class="field">
         <div class="control">
-          <button type="button" id="sendButton" class="button is-outlined is-link" onclick="sendMail(event)">Envoyer</button>
+          <button 
+            type="button" id="sendButton" class="button is-outlined is-link g-recaptcha"
+            onclick="recaptchaHandler('submit', sendMail)"
+          > Envoyer </button>
           <button type="button" id="sendingButton" class="button is-outlined is-hidden">
             <span class="icon">
               <i class="fas fa-circle-notch fa-spin"></i>
@@ -44,7 +52,7 @@
         </div>
       </div>
 
-      <input type="submit" class="is-hidden" id="fakeSubmit">
+      <input type="submit" id="fakeSubmit" class="is-hidden">
 
       <div class="notify"></div>
 

@@ -37,5 +37,6 @@ func (c *StoryController) Get() {
 	c.Data["PhotoUrl"] = story.PhotoUrl
 	c.Data["Text"] = story.Text
 
-	c.Ctx.Output.Header("ETag", fmt.Sprintf("\"%s.%d\"", etag, helpers.StructToCrc32(story)))
+	etag = fmt.Sprintf("%s.%d", etag, helpers.StructToCrc32(story))
+	helpers.HandleEtag(&c.Controller, etag)
 }

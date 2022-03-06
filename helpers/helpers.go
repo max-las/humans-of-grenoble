@@ -11,7 +11,7 @@ import (
 
   "github.com/cloudinary/cloudinary-go"
   "github.com/cloudinary/cloudinary-go/api/uploader"
-
+  beego "github.com/beego/beego/v2/server/web"
 )
 
 func HashPassword(password string) (string, error) {
@@ -80,4 +80,12 @@ func TplLastModifiedString(tpl string) string {
   }
 
   return fmt.Sprintf("%d", file.ModTime().Unix())
+}
+
+func HandleEtag(c *beego.Controller, etag string) {
+  if(strings.Trim(c.Ctx.Input.Header("If-None-Match"), "\"") != etag){
+    c.Ctx.Output.Header("ETag", fmt.Sprintf("\"%s\"", etag))
+  }else{
+    c.Abort("304")
+  }
 }
