@@ -17,11 +17,18 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"net"
 )
 
 func init() {
 	var err error
 
+	ip := os.Getenv("IP")
+	if len(ip) > 0 && net.ParseIP(ip).To4() == nil {
+		ip = fmt.Sprintf("[%v]", ip)
+	}
+
+	beego.BConfig.Listen.HTTPAddr = ip
 	beego.BConfig.Listen.HTTPPort, err = strconv.Atoi(os.Getenv("PORT"))
 	if err != nil {
 		beego.BConfig.Listen.HTTPPort = 8080
@@ -29,7 +36,6 @@ func init() {
 
 	orm.RegisterDriver("postgres", orm.DRPostgres)
 	orm.RegisterDataBase("default", "postgres", os.Getenv("DATABASE_URL"))
-
 }
 
 func main() {
